@@ -34,8 +34,9 @@ class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
         try:
             df_filter = ((X['is_installed']==0) | \
                          (X['is_renting']==0)   | \
-                         (X['is_returning']==0))
-            
+                         (X['is_returning']==0) | \
+                         (~(X['status']=='IN_SERVICE')))   
+
             df_index_to_filter = X[df_filter].index
             logger.debug(f'Index to delete: {len(df_index_to_filter)}')
             X.drop(index=df_index_to_filter,
@@ -72,11 +73,11 @@ def clean_data(df:pd.DataFrame, columns_to_delete:List)->pd.DataFrame:
 
 def main():
     df = pd.read_csv('./Data/STATIONS/2021_04_Abril_BicingNou_ESTACIONS.csv')
-    # original_station_df = pd.read_csv('./Data/STATIONS/2019_04_Abril_BICING2_STAT.csv')
     logger.debug(f'Initial shape: {df.shape}')
 
     logger.debug(f'Initial columns: {df.columns}')
-    columns_to_delete = ['last_reported', 'is_charging_station', 'status', 'ttl']    
+    columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
+                         'is_installed','is_renting','is_returning', 'status']    
     result_global = clean_data(df, columns_to_delete)
 
     logger.debug(f'Final shape: {result_global.shape}')
