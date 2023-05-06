@@ -7,14 +7,17 @@ from typing import List
 # sklearns imports
 import sklearn
 from sklearn import preprocessing
+from sklearn.preprocessing import StandardScaler
 from sklearn.base import BaseEstimator, TransformerMixin # To create full custom transformers
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import FeatureUnion
+from sklearn import set_config
 
 LOGGER_FILE = 'missages.log'
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
+logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
 class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -26,11 +29,11 @@ class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
     def transform(self, X:pd.DataFrame):
         '''
         Delete all the rows where a station is not available (NAS).
-        p.e.
+        
         is_installed == False
         is_renting == False
         is_returning == False 
-        ...
+        status is not IN_SERVICE
         '''
         try:
             df_filter = ((X['is_installed']==0) | \
@@ -67,6 +70,8 @@ class DeleteNaNInRows(BaseEstimator, TransformerMixin):
 
 def clean_data(df:pd.DataFrame, columns_to_delete:List)->pd.DataFrame:
 
+    set_config(transform_output="pandas")
+
     clean_NAS = DeleteNotAvailableStationsRows()
 
     all_columns = df.columns.to_list()
@@ -85,21 +90,24 @@ def clean_data(df:pd.DataFrame, columns_to_delete:List)->pd.DataFrame:
         ('DeleteNaNInRows', clean_NaN),
     ])
 
-    return pd.DataFrame(pipeline_all.fit_transform(df), columns=columns_to_keep)
-    # return pd.DataFrame(pipeline_all.fit_transform(df), columns=all_columns)
-    
+    return pipeline_all, columns_to_keep
 
 
 def main():
     df = pd.read_csv('./Data/STATIONS/2021_04_Abril_BicingNou_ESTACIONS.csv')
-    logger.debug(f'Initial shape: {df.shape}')
 
+    logger.debug(f'Initial shape: {df.shape}')
     logger.debug(f'Initial columns: {df.columns}')
+
     columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
                          'is_installed','is_renting','is_returning', 'status']    
-    result_global = clean_data(df, columns_to_delete)
+    clean_pipline, columns_to_keep = clean_data(df, columns_to_delete)
 
-    logger.debug(f'Final shape: {result_global.shape}')
+    clean_df =clean_pipline.fit_transform(df)
+
+    logger.debug(f'Final shape: {clean_df.shape}')
+    logger.debug(f'Final columns: {clean_df.columns}')
+
 
 
 
