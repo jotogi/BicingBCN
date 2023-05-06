@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import numpy as np
 from logger import get_handler
 from typing import List
 
@@ -47,9 +48,27 @@ class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
             print(f'Error cleaning the rows for NAS, exception missage\n{str(e)}')
             raise e
         return X
+    
+class DeleteNaNInRows(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            X[~np.isnan(X).any(axis=1)]
+        except Exception as e:
+            print(f'Error cleaning the rows for NaN, exception missage\n{str(e)}')
+            raise e
+        return X
 
 
 def clean_data(df:pd.DataFrame, columns_to_delete:List)->pd.DataFrame:
+
+    clean_NAS = DeleteNotAvailableStationsRows()
+
     all_columns = df.columns.to_list()
     columns_to_keep = [column for column in all_columns if column not in columns_to_delete]
     first_pipeline = ColumnTransformer([
@@ -58,12 +77,12 @@ def clean_data(df:pd.DataFrame, columns_to_delete:List)->pd.DataFrame:
         ('DeleteColumns', 'drop' ,columns_to_delete),
     ])
 
-
-    clean_NAS = DeleteNotAvailableStationsRows()
+    clean_NaN = DeleteNaNInRows()
 
     pipeline_all = Pipeline([
         ('DeleteNAS',clean_NAS),
         ('ColumnTransformer',first_pipeline),
+        ('DeleteNaNInRows', clean_NaN),
     ])
 
     return pd.DataFrame(pipeline_all.fit_transform(df), columns=columns_to_keep)
