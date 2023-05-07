@@ -61,53 +61,79 @@ class DeleteNaNInRows(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame):
         try:
-            X[~np.isnan(X).any(axis=1)]
+            # X[~np.isnan(X).any(axis=1)]
+            X.dropna(axis=1)
         except Exception as e:
             print(f'Error cleaning the rows for NaN, exception missage\n{str(e)}')
             raise e
         return X
 
+class TransformToTimestamp(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            X['last_updated'] = X['last_updated'].apply(lambda x: pd.Timestamp(x, unit='s',tz='Europe/Madrid'))
+            X['year'] = X['last_updated'].dt.year
+            X['month'] = X['last_updated'].dt.month
+            X['day'] = X['last_updated'].dt.day
+            X['hour'] = X['last_updated'].dt.hour
+        except Exception as e:
+            print(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
+            raise e
+        return X
 
-def clean_data(df:pd.DataFrame, columns_to_delete:List)->pd.DataFrame:
 
-    set_config(transform_output="pandas")
+def clean_data_pipeline(columns_to_delete:List)->Pipeline:
 
+    # Instantiacte transformers
     clean_NAS = DeleteNotAvailableStationsRows()
 
-    all_columns = df.columns.to_list()
-    columns_to_keep = [column for column in all_columns if column not in columns_to_delete]
-    first_pipeline = ColumnTransformer([
-    # Ordered transformations
-        ('Select', 'passthrough' ,columns_to_keep),
+    first_pipeline = ColumnTransformer(
+        [# Ordered transformations
+        # ('Select', 'passthrough' ,columns_to_keep), -> equivalent to reminder='passthrough'
         ('DeleteColumns', 'drop' ,columns_to_delete),
-    ])
+        ],
+        remainder='passthrough',
+        verbose_feature_names_out=False #-> to avoid changes in the column names.
+        )
 
     clean_NaN = DeleteNaNInRows()
+    DateTimeTransform = TransformToTimestamp()
 
+    # Instantiate pipeline
     pipeline_all = Pipeline([
         ('DeleteNAS',clean_NAS),
         ('ColumnTransformer',first_pipeline),
         ('DeleteNaNInRows', clean_NaN),
+        ('TransformDateTime', DateTimeTransform),
     ])
 
-    return pipeline_all, columns_to_keep
+    return pipeline_all
 
 
 def main():
     df = pd.read_csv('./Data/STATIONS/2021_04_Abril_BicingNou_ESTACIONS.csv')
+
+    # to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
+    set_config(transform_output="pandas")
+
 
     logger.debug(f'Initial shape: {df.shape}')
     logger.debug(f'Initial columns: {df.columns}')
 
     columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
                          'is_installed','is_renting','is_returning', 'status']    
-    clean_pipline, columns_to_keep = clean_data(df, columns_to_delete)
+    clean_pipline = clean_data_pipeline(columns_to_delete)
 
     clean_df =clean_pipline.fit_transform(df)
 
     logger.debug(f'Final shape: {clean_df.shape}')
     logger.debug(f'Final columns: {clean_df.columns}')
-
 
 
 
