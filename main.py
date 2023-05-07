@@ -73,7 +73,7 @@ def main():
 
 
     # files_list = get_all_files_under_path(STATIONS_INFO_CLEANED_PATH)
-    # dataframe_list = [pd.read_csv(STATIONS_INFO_CLEANED_PATH+file) for file in files_list]
+    # dataframe_list = [pd.read_csv(STATIONS_INFO_CLEANED_PATH+file) for file in files_list if file != 'global_df.csv']
 
 
 
@@ -82,11 +82,11 @@ def main():
         if index == 0:
             pass
         else:
-            globlal_df = pd.concat([globlal_df,df], axis=1)
+            globlal_df = pd.concat([globlal_df,df], axis=0)
             logger.debug(f'Added df {index}')
         logger.debug(f'El nou dataframe te unes dimensions: {df.shape}')
         logger.debug(f'El dataframe acumulat te unes dimensions: {globlal_df.shape}')
-
+    logger.debug(f'Saving datafrem to csv file. Dimensions {globlal_df.shape}')
     globlal_df.to_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
 
 
