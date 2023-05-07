@@ -15,7 +15,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import FeatureUnion
 from sklearn import set_config
 
-LOGGER_FILE = 'missages.log'
+LOGGER_FILE = 'missages_dataclean.log'
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
 logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
