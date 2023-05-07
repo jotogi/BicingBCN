@@ -48,8 +48,10 @@ class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
                    inplace = True,
                    errors = 'ignore')
         except Exception as e:
-            print(f'Error cleaning the rows for NAS, exception missage\n{str(e)}')
+            logger.debug(f'Error cleaning the rows for NAS, exception missage\n{str(e)}')
             raise e
+        else:
+            logger.debug('DeleteNotAvailableStationsRows -> Completed!')
         return X
     
 class DeleteNaNInRows(BaseEstimator, TransformerMixin):
@@ -64,8 +66,10 @@ class DeleteNaNInRows(BaseEstimator, TransformerMixin):
             # X[~np.isnan(X).any(axis=1)]
             X.dropna(axis=1)
         except Exception as e:
-            print(f'Error cleaning the rows for NaN, exception missage\n{str(e)}')
+            logger.debug(f'Error cleaning the rows for NaN, exception missage\n{str(e)}')
             raise e
+        else:
+            logger.debug('DeleteNaNInRows -> Completed!')
         return X
 
 class TransformToTimestamp(BaseEstimator, TransformerMixin):
@@ -83,9 +87,29 @@ class TransformToTimestamp(BaseEstimator, TransformerMixin):
             X['day'] = X['last_updated'].dt.day
             X['hour'] = X['last_updated'].dt.hour
         except Exception as e:
-            print(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
+            logger.debug(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
             raise e
+        else:
+            logger.debug('TransformToTimestamp -> Completed!')        
         return X
+
+class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            X['relative_occupacy'] = X['num_bikes_available']/(X['num_bikes_available']+X['num_docks_available'])
+        except Exception as e:
+            logger.debug(f'Error obtaining relative occupacy, exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('CreateRelativeOccupacyColumn -> Completed!')        
+        return X
+    
 
 
 def clean_data_pipeline(columns_to_delete:List)->Pipeline:
@@ -104,6 +128,7 @@ def clean_data_pipeline(columns_to_delete:List)->Pipeline:
 
     clean_NaN = DeleteNaNInRows()
     DateTimeTransform = TransformToTimestamp()
+    RelativeOccupacy = CreateRelativeOccupacyColumn()
 
     # Instantiate pipeline
     pipeline_all = Pipeline([
@@ -111,6 +136,7 @@ def clean_data_pipeline(columns_to_delete:List)->Pipeline:
         ('ColumnTransformer',first_pipeline),
         ('DeleteNaNInRows', clean_NaN),
         ('TransformDateTime', DateTimeTransform),
+        ('CreateRelativeOccupaceColumn',RelativeOccupacy),
     ])
 
     return pipeline_all
@@ -129,6 +155,8 @@ def main():
     columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
                          'is_installed','is_renting','is_returning', 'status']    
     clean_pipline = clean_data_pipeline(columns_to_delete)
+
+    logger.debug(f'Start fit_transform')
 
     clean_df =clean_pipline.fit_transform(df)
 
