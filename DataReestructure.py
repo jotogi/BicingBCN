@@ -53,7 +53,27 @@ class ShiftColumns(BaseEstimator, TransformerMixin):
             raise e
         else:
             logger.debug('ShiftColumns -> Completed!')        
-        return average_df
+        return X
+
+class PruneRows(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            df_length = X.shape[0]
+            initial_row = 5
+            row_increase = 5
+            pruned_df = X.iloc[initial_row:df_length:row_increase]
+        except Exception as e:
+            logger.debug(f'Error pruning rows (PruneRows), exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('PruneRows -> Completed!')        
+        return pruned_df
 
 def transform_data_pipeline()->Pipeline:
 
@@ -61,11 +81,13 @@ def transform_data_pipeline()->Pipeline:
     
     group_and_average = GroupAndAverage()
     shift_columns = ShiftColumns()
+    prune_rows = PruneRows()
 
     # Instantiate pipeline
     pipeline_all = Pipeline([
         ('GroupAndAverage',group_and_average),
         ('ShiftColumns',shift_columns),
+        ('PruneRows',prune_rows),
     ])
 
     return pipeline_all
