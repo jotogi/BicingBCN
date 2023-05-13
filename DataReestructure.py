@@ -43,11 +43,10 @@ class ShiftColumns(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame):
         try:
-            X['relative_occupacy-1h'] = X['relative_occupacy'].shift(periods=1, fill_value=0)
-            X['relative_occupacy-2h'] = X['relative_occupacy'].shift(periods=2, fill_value=0)
-            X['relative_occupacy-3h'] = X['relative_occupacy'].shift(periods=3, fill_value=0)
-            X['relative_occupacy-4h'] = X['relative_occupacy'].shift(periods=4, fill_value=0)
-            X['relative_occupacy'] = X['relative_occupacy'].shift(periods=5, fill_value=0)
+            X['ctx-1'] = X['percentage_docks_available'].shift(periods=1, fill_value=0)
+            X['ctx-2'] = X['percentage_docks_available'].shift(periods=2, fill_value=0)
+            X['ctx-3'] = X['percentage_docks_available'].shift(periods=3, fill_value=0)
+            X['ctx-4'] = X['percentage_docks_available'].shift(periods=4, fill_value=0)
         except Exception as e:
             logger.debug(f'Error shifting columns (ShiftColumns), exception missage\n{str(e)}')
             raise e

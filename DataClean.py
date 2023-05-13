@@ -86,6 +86,7 @@ class TransformToTimestamp(BaseEstimator, TransformerMixin):
             X['month'] = X['last_updated'].dt.month
             X['day'] = X['last_updated'].dt.day
             X['hour'] = X['last_updated'].dt.hour
+            X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dt.dayofweek in range(5,6) else 1)
         except Exception as e:
             logger.debug(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
             raise e
@@ -102,7 +103,7 @@ class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame):
         try:
-            X['relative_occupacy'] = X['num_bikes_available']/(X['num_bikes_available']+X['num_docks_available'])
+            X['percentage_docks_available'] = X['num_docks_available']/(X['num_bikes_available']+X['num_docks_available'])
         except Exception as e:
             logger.debug(f'Error obtaining relative occupacy, exception missage\n{str(e)}')
             raise e

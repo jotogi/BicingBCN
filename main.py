@@ -13,6 +13,7 @@ from sklearn import set_config
 set_config(transform_output="pandas")
 
 LOGGER_FILE = 'missages_main.log'
+INFO = '.Data/INFO/'
 STATIONS_INFO_PATH = './Data/STATIONS/'
 STATIONS_INFO_CLEANED_PATH = './Data/STATIONS_CLEANED/'
 COLUMNS_TO_DELETE = ['last_reported', 'is_charging_station', 'ttl',
@@ -21,6 +22,16 @@ COLUMNS_TO_DELETE = ['last_reported', 'is_charging_station', 'ttl',
 
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
 logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
+
+def create_folder_structure(folder:str)->None:
+    try:    
+        os.makedirs('./Data/INFO/')
+    except:
+        logger.debug(f'Carpeta {folder} ja existeix')
+    else:
+        logger.debug(f'Carpeta {folder} creada!')
+
+         
 
 def get_all_files_under_path(path:str='./Data/STATIONS')->List:
     return sorted(os.listdir(path))
@@ -72,12 +83,23 @@ def get_global_dataframe(files_path:str,original_files=True)->pd.DataFrame:
     
     return pd.concat(dataframe_list, axis=0)
 
-def main():    
-    globlal_df = get_global_dataframe(STATIONS_INFO_CLEANED_PATH,original_files=False)
+def main():        
+    # Crear aquest systema de fitxers dins de la vostra carpeta de projecte
+    create_folder_structure(INFO)
+    create_folder_structure(STATIONS_INFO_PATH)
+    create_folder_structure(STATIONS_INFO_CLEANED_PATH)
+    # Copiar els fitxers de dades dins de la carpeta ./Data/STATIONS
+
+    # El primer cop que generem els df hem de posar 'original_files' = True.
+    # Això generearà un arxiu de dades "net" .csv per cada arxiu de dades original
+    # Fi només volem generear el dataframe global a partir dels arixius nets ja generats,
+    # hem de posar 'original_files' = False.
+
+    globlal_df = get_global_dataframe(STATIONS_INFO_CLEANED_PATH,original_files=True)
+
+    # Guardem el dataframe global en format .csv
     globlal_df.to_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
-
-
-
+    return globlal_df
 
 
 if __name__ == '__main__':
