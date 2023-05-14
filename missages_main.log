@@ -1,0 +1,4 @@
+2023-05-14 13:35:52,763 logger          INFO     The scikit-learn version should be >=1.2, and is 1.2.2
+2023-05-14 13:35:52,766 logger          DEBUG    Carpeta .Data/INFO/ creada!
+2023-05-14 13:35:52,768 logger          DEBUG    Carpeta ./Data/STATIONS/ ja existeix
+2023-05-14 13:35:52,768 logger          DEBUG    Carpeta ./Data/STATIONS_CLEANED/ ja existeix
