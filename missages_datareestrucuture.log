@@ -5,3 +5,13 @@
 2023-05-14 13:35:52,766 logger          DEBUG    Carpeta .Data/INFO/ creada!
 2023-05-14 13:35:52,768 logger          DEBUG    Carpeta ./Data/STATIONS/ ja existeix
 2023-05-14 13:35:52,768 logger          DEBUG    Carpeta ./Data/STATIONS_CLEANED/ ja existeix
+2023-05-14 17:01:17,587 logger          INFO     The scikit-learn version should be >=1.2, and is 1.2.2
+2023-05-14 17:01:17,587 logger          INFO     The scikit-learn version should be >=1.2, and is 1.2.2
+2023-05-14 17:01:17,604 logger          DEBUG    Carpeta .Data/INFO/ ja existeix
+2023-05-14 17:01:17,605 logger          DEBUG    Carpeta ./Data/STATIONS/ ja existeix
+2023-05-14 17:01:17,606 logger          DEBUG    Carpeta ./Data/STATIONS_CLEANED/ ja existeix
+2023-05-14 18:12:26,864 logger          INFO     The scikit-learn version should be >=1.2, and is 1.2.2
+2023-05-14 18:12:26,866 logger          INFO     The scikit-learn version should be >=1.2, and is 1.2.2
+2023-05-14 18:12:26,868 logger          DEBUG    Carpeta .Data/INFO/ ja existeix
+2023-05-14 18:12:26,868 logger          DEBUG    Carpeta ./Data/STATIONS/ ja existeix
+2023-05-14 18:12:26,870 logger          DEBUG    Carpeta ./Data/STATIONS_CLEANED/ ja existeix
