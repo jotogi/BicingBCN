@@ -76,14 +76,16 @@ def get_global_dataframe(files_path:str,original_files=True)->pd.DataFrame:
     '''
 
     files_list = get_all_files_under_path(files_path)
+    logger.debug(f'Files to convert: {files_list}')
     if original_files:
-         dataframe_list = [get_reestructured_df_from_file(file) for file in files_list]
+        logger.debug(f'Files to convert: {files_list}')
+        dataframe_list = [get_reestructured_df_from_file(file) for file in files_list]
     else:
-         dataframe_list = [pd.read_csv(STATIONS_INFO_CLEANED_PATH+file) for file in files_list if file != 'global_df.csv']
+        dataframe_list = [pd.read_csv(STATIONS_INFO_CLEANED_PATH+file) for file in files_list if file != 'global_df.csv']
     
     return pd.concat(dataframe_list, axis=0)
 
-def main():        
+def run()->pd.DataFrame:
     # Crear aquest systema de fitxers dins de la vostra carpeta de projecte
     create_folder_structure(INFO)
     create_folder_structure(STATIONS_INFO_PATH)
@@ -95,12 +97,17 @@ def main():
     # Fi només volem generear el dataframe global a partir dels arixius nets ja generats,
     # hem de posar 'original_files' = False.
 
-    globlal_df = get_global_dataframe(STATIONS_INFO_CLEANED_PATH,original_files=True)
+    globlal_df = get_global_dataframe(STATIONS_INFO_PATH,original_files=True)
+    # globlal_df = get_global_dataframe(STATIONS_INFO_CLEANED_PATH,original_files=False)
 
     # Guardem el dataframe global en format .csv
     globlal_df.to_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
-    return globlal_df
+    return globlal_df     
 
+
+
+def main():        
+     run()
 
 if __name__ == '__main__':
     main()

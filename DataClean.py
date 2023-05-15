@@ -86,7 +86,7 @@ class TransformToTimestamp(BaseEstimator, TransformerMixin):
             X['month'] = X['last_updated'].dt.month
             X['day'] = X['last_updated'].dt.day
             X['hour'] = X['last_updated'].dt.hour
-            X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dt.dayofweek in range(5,6) else 1)
+            X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dayofweek in range(5,6) else 1)
         except Exception as e:
             logger.debug(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
             raise e
