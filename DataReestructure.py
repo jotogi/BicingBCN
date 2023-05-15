@@ -64,7 +64,7 @@ class PruneRows(BaseEstimator, TransformerMixin):
     def transform(self, X:pd.DataFrame):
         try:
             df_length = X.shape[0]
-            initial_row = 5
+            initial_row = 4
             row_increase = 5
             pruned_df = X.iloc[initial_row:df_length:row_increase]
         except Exception as e:
