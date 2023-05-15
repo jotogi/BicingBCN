@@ -85,7 +85,7 @@ def get_global_dataframe(files_path:str,original_files=True)->pd.DataFrame:
     
     return pd.concat(dataframe_list, axis=0)
 
-def run()->None:
+def run()->pd.DataFrame:
     # Crear aquest systema de fitxers dins de la vostra carpeta de projecte
     create_folder_structure(INFO)
     create_folder_structure(STATIONS_INFO_PATH)
@@ -104,10 +104,10 @@ def run()->None:
     globlal_df.to_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
     return globlal_df     
 
+
+
 def main():        
      run()
-
-
 
 if __name__ == '__main__':
     main()
