@@ -10,3 +10,559 @@
 2023-05-14 18:12:26,868 logger          DEBUG    Carpeta .Data/INFO/ ja existeix
 2023-05-14 18:12:26,868 logger          DEBUG    Carpeta ./Data/STATIONS/ ja existeix
 2023-05-14 18:12:26,870 logger          DEBUG    Carpeta ./Data/STATIONS_CLEANED/ ja existeix
+2023-05-15 19:36:48,252 logger          INFO     The scikit-learn version should be >=1.2, and is 1.2.2
+2023-05-15 19:36:48,253 logger          DEBUG    Carpeta .Data/INFO/ ja existeix
+2023-05-15 19:36:48,255 logger          DEBUG    Carpeta ./Data/STATIONS/ ja existeix
+2023-05-15 19:36:48,256 logger          DEBUG    Carpeta ./Data/STATIONS_CLEANED/ ja existeix
+2023-05-15 19:36:48,257 logger          DEBUG    Files to convert: ['2019_03_Març_BICING2_STAT.csv', '2019_04_Abril_BICING2_STAT.csv', '2019_05_Maig_BICING2_STAT.csv', '2019_06_Juny_NouBicing_ESTACIONS.csv', '2019_07_Juliol_BicingNou_ESTACIONS.csv', '2019_08_Agost_BicingNou_ESTACIONS.csv', '2019_09_Setembre_BicingNou_ESTACIONS.csv', '2019_10_Octubre_BicingNou_ESTACIONS.csv', '2019_11_Novembre_BicingNou_ESTACIONS.csv', '2019_12_Desembre_BicingNou_ESTACIONS.csv', '2020_01_Gener_BicingNou_ESTACIONS.csv', '2020_02_Febrer_BicingNou_ESTACIONS.csv', '2020_03_Marc_BicingNou_ESTACIONS.csv', '2020_04_Abril_BicingNou_ESTACIONS.csv', '2020_05_Maig_BicingNou_ESTACIONS.csv', '2020_06_Juny_BicingNou_ESTACIONS.csv', '2020_07_Juliol_BicingNou_ESTACIONS.csv', '2020_08_Agost_BicingNou_ESTACIONS.csv', '2020_09_Setembre_BicingNou_ESTACIONS.csv', '2020_10_Octubre_BicingNou_ESTACIONS.csv', '2020_11_Novembre_BicingNou_ESTACIONS.csv', '2020_12_Desembre_BicingNou_ESTACIONS.csv', '2021_01_Gener_BicingNou_ESTACIONS.csv', '2021_02_Febrer_BicingNou_ESTACIONS.csv', '2021_03_Març_BicingNou_ESTACIONS.csv', '2021_04_Abril_BicingNou_ESTACIONS.csv', '2021_05_Maig_BicingNou_ESTACIONS.csv', '2021_06_Juny_BicingNou_ESTACIONS.csv', '2021_07_Juliol_BicingNou_ESTACIONS.csv', '2021_08_Agost_BicingNou_ESTACIONS.csv', '2021_09_Setembre_BicingNou_ESTACIONS.csv', '2021_10_Octubre_BicingNou_ESTACIONS.csv', '2021_11_Novembre_BicingNou_ESTACIONS.csv', '2021_12_Desembre_BicingNou_ESTACIONS.csv', '2022_01_Gener_BicingNou_ESTACIONS.csv', '2022_02_Febrer_BicingNou_ESTACIONS.csv', '2022_03_Març_BicingNou_ESTACIONS.csv', '2022_04_Abril_BicingNou_ESTACIONS.csv', '2022_05_Maig_BicingNou_ESTACIONS.csv', '2022_06_Juny_BicingNou_ESTACIONS.csv', '2022_07_Juliol_BicingNou_ESTACIONS.csv', '2022_08_Agost_BicingNou_ESTACIONS.csv', '2022_09_Setembre_BicingNou_ESTACIONS.csv', '2022_10_Octubre_BicingNou_ESTACIONS.csv', '2022_11_Novembre_BicingNou_ESTACIONS.csv', '2022_12_Desembre_BicingNou_ESTACIONS.csv', '2023_01_Gener_BicingNou_ESTACIONS.csv', '2023_02_Febrer_BicingNou_ESTACIONS.csv', '2023_03_Marc_BicingNou_ESTACIONS.csv', '2023_04_Abril_BicingNou_ESTACIONS.csv']
+2023-05-15 19:36:48,267 logger          DEBUG    Files to convert: ['2019_03_Març_BICING2_STAT.csv', '2019_04_Abril_BICING2_STAT.csv', '2019_05_Maig_BICING2_STAT.csv', '2019_06_Juny_NouBicing_ESTACIONS.csv', '2019_07_Juliol_BicingNou_ESTACIONS.csv', '2019_08_Agost_BicingNou_ESTACIONS.csv', '2019_09_Setembre_BicingNou_ESTACIONS.csv', '2019_10_Octubre_BicingNou_ESTACIONS.csv', '2019_11_Novembre_BicingNou_ESTACIONS.csv', '2019_12_Desembre_BicingNou_ESTACIONS.csv', '2020_01_Gener_BicingNou_ESTACIONS.csv', '2020_02_Febrer_BicingNou_ESTACIONS.csv', '2020_03_Marc_BicingNou_ESTACIONS.csv', '2020_04_Abril_BicingNou_ESTACIONS.csv', '2020_05_Maig_BicingNou_ESTACIONS.csv', '2020_06_Juny_BicingNou_ESTACIONS.csv', '2020_07_Juliol_BicingNou_ESTACIONS.csv', '2020_08_Agost_BicingNou_ESTACIONS.csv', '2020_09_Setembre_BicingNou_ESTACIONS.csv', '2020_10_Octubre_BicingNou_ESTACIONS.csv', '2020_11_Novembre_BicingNou_ESTACIONS.csv', '2020_12_Desembre_BicingNou_ESTACIONS.csv', '2021_01_Gener_BicingNou_ESTACIONS.csv', '2021_02_Febrer_BicingNou_ESTACIONS.csv', '2021_03_Març_BicingNou_ESTACIONS.csv', '2021_04_Abril_BicingNou_ESTACIONS.csv', '2021_05_Maig_BicingNou_ESTACIONS.csv', '2021_06_Juny_BicingNou_ESTACIONS.csv', '2021_07_Juliol_BicingNou_ESTACIONS.csv', '2021_08_Agost_BicingNou_ESTACIONS.csv', '2021_09_Setembre_BicingNou_ESTACIONS.csv', '2021_10_Octubre_BicingNou_ESTACIONS.csv', '2021_11_Novembre_BicingNou_ESTACIONS.csv', '2021_12_Desembre_BicingNou_ESTACIONS.csv', '2022_01_Gener_BicingNou_ESTACIONS.csv', '2022_02_Febrer_BicingNou_ESTACIONS.csv', '2022_03_Març_BicingNou_ESTACIONS.csv', '2022_04_Abril_BicingNou_ESTACIONS.csv', '2022_05_Maig_BicingNou_ESTACIONS.csv', '2022_06_Juny_BicingNou_ESTACIONS.csv', '2022_07_Juliol_BicingNou_ESTACIONS.csv', '2022_08_Agost_BicingNou_ESTACIONS.csv', '2022_09_Setembre_BicingNou_ESTACIONS.csv', '2022_10_Octubre_BicingNou_ESTACIONS.csv', '2022_11_Novembre_BicingNou_ESTACIONS.csv', '2022_12_Desembre_BicingNou_ESTACIONS.csv', '2023_01_Gener_BicingNou_ESTACIONS.csv', '2023_02_Febrer_BicingNou_ESTACIONS.csv', '2023_03_Marc_BicingNou_ESTACIONS.csv', '2023_04_Abril_BicingNou_ESTACIONS.csv']
+2023-05-15 19:36:48,280 logger          DEBUG    2019_03_Març_BICING2_STAT.csv
+2023-05-15 19:36:48,783 logger          DEBUG    Index to delete: 0
+2023-05-15 19:36:48,821 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:36:48,868 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:36:54,581 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:36:54,598 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:36:54,600 logger          DEBUG    Start fit_transform
+2023-05-15 19:36:54,740 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:36:54,749 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:36:54,755 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:36:54,851 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:36:54,859 logger          DEBUG    2019_04_Abril_BICING2_STAT.csv
+2023-05-15 19:36:59,888 logger          DEBUG    Index to delete: 4
+2023-05-15 19:37:00,584 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:37:00,956 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:37:45,098 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:37:45,132 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:37:45,135 logger          DEBUG    Start fit_transform
+2023-05-15 19:37:46,103 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:37:46,130 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:37:46,134 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:37:46,951 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:37:47,023 logger          DEBUG    2019_05_Maig_BICING2_STAT.csv
+2023-05-15 19:37:51,127 logger          DEBUG    Index to delete: 3216
+2023-05-15 19:37:51,523 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:37:51,821 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:38:45,096 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:38:45,127 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:38:45,128 logger          DEBUG    Start fit_transform
+2023-05-15 19:38:46,014 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:38:46,030 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:38:46,032 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:38:46,842 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:38:46,891 logger          DEBUG    2019_06_Juny_NouBicing_ESTACIONS.csv
+2023-05-15 19:38:50,782 logger          DEBUG    Index to delete: 58664
+2023-05-15 19:38:51,166 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:38:51,416 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:39:36,049 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:39:36,087 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:39:36,091 logger          DEBUG    Start fit_transform
+2023-05-15 19:39:36,919 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:39:36,938 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:39:36,940 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:39:37,692 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:39:37,737 logger          DEBUG    2019_07_Juliol_BicingNou_ESTACIONS.csv
+2023-05-15 19:39:41,382 logger          DEBUG    Index to delete: 19582
+2023-05-15 19:39:41,760 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:39:41,955 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:40:22,932 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:40:22,967 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:40:22,969 logger          DEBUG    Start fit_transform
+2023-05-15 19:40:23,737 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:40:23,750 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:40:23,752 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:40:24,432 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:40:24,496 logger          DEBUG    2019_08_Agost_BicingNou_ESTACIONS.csv
+2023-05-15 19:40:28,755 logger          DEBUG    Index to delete: 35114
+2023-05-15 19:40:29,132 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:40:29,347 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:41:13,344 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:41:13,379 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:41:13,381 logger          DEBUG    Start fit_transform
+2023-05-15 19:41:14,234 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:41:14,248 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:41:14,250 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:41:15,033 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:41:15,080 logger          DEBUG    2019_09_Setembre_BicingNou_ESTACIONS.csv
+2023-05-15 19:41:18,409 logger          DEBUG    Index to delete: 48166
+2023-05-15 19:41:18,746 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:41:18,916 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:42:04,946 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:42:04,993 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:42:04,995 logger          DEBUG    Start fit_transform
+2023-05-15 19:42:05,898 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:42:05,915 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:42:05,917 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:42:06,721 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:42:06,771 logger          DEBUG    2019_10_Octubre_BicingNou_ESTACIONS.csv
+2023-05-15 19:42:10,428 logger          DEBUG    Index to delete: 37095
+2023-05-15 19:42:10,865 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:42:11,090 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:42:55,559 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:42:55,597 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:42:55,598 logger          DEBUG    Start fit_transform
+2023-05-15 19:42:56,319 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:42:56,332 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:42:56,333 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:42:57,004 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:42:57,047 logger          DEBUG    2019_11_Novembre_BicingNou_ESTACIONS.csv
+2023-05-15 19:43:00,085 logger          DEBUG    Index to delete: 47245
+2023-05-15 19:43:00,389 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:43:00,558 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:43:41,095 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:43:41,127 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:43:41,128 logger          DEBUG    Start fit_transform
+2023-05-15 19:43:41,811 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:43:41,822 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:43:41,823 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:43:42,451 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:43:42,493 logger          DEBUG    2019_12_Desembre_BicingNou_ESTACIONS.csv
+2023-05-15 19:43:45,761 logger          DEBUG    Index to delete: 43390
+2023-05-15 19:43:46,165 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:43:46,377 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:44:31,101 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:44:31,132 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:44:31,134 logger          DEBUG    Start fit_transform
+2023-05-15 19:44:31,847 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:44:31,857 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:44:31,858 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:44:32,520 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:44:32,558 logger          DEBUG    2020_01_Gener_BicingNou_ESTACIONS.csv
+2023-05-15 19:44:35,431 logger          DEBUG    Index to delete: 56062
+2023-05-15 19:44:35,749 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:44:35,906 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:45:17,318 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:45:17,346 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:45:17,347 logger          DEBUG    Start fit_transform
+2023-05-15 19:45:18,034 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:45:18,042 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:45:18,044 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:45:18,669 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:45:18,707 logger          DEBUG    2020_02_Febrer_BicingNou_ESTACIONS.csv
+2023-05-15 19:45:22,005 logger          DEBUG    Index to delete: 45266
+2023-05-15 19:45:22,354 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:45:22,550 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:46:02,571 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:46:02,603 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:46:02,605 logger          DEBUG    Start fit_transform
+2023-05-15 19:46:03,313 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:46:03,324 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:46:03,326 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:46:04,082 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:46:04,129 logger          DEBUG    2020_03_Marc_BicingNou_ESTACIONS.csv
+2023-05-15 19:46:06,380 logger          DEBUG    Index to delete: 451235
+2023-05-15 19:46:06,574 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:46:06,664 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:46:29,328 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:46:29,351 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:46:29,352 logger          DEBUG    Start fit_transform
+2023-05-15 19:46:29,805 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:46:29,826 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:46:29,827 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:46:30,245 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:46:30,271 logger          DEBUG    2020_04_Abril_BicingNou_ESTACIONS.csv
+2023-05-15 19:46:35,015 logger          DEBUG    Index to delete: 2840067
+2023-05-15 19:46:35,281 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:46:35,362 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:46:48,500 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:46:48,514 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:46:48,515 logger          DEBUG    Start fit_transform
+2023-05-15 19:46:48,781 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:46:48,789 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:46:48,790 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:46:48,992 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:46:49,009 logger          DEBUG    2020_05_Maig_BicingNou_ESTACIONS.csv
+2023-05-15 19:46:52,821 logger          DEBUG    Index to delete: 12795
+2023-05-15 19:46:53,182 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:46:53,381 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:47:36,039 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:47:36,071 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:47:36,073 logger          DEBUG    Start fit_transform
+2023-05-15 19:47:36,973 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:47:36,988 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:47:36,993 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:47:37,809 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:47:37,859 logger          DEBUG    2020_06_Juny_BicingNou_ESTACIONS.csv
+2023-05-15 19:47:42,010 logger          DEBUG    Index to delete: 5829
+2023-05-15 19:47:42,408 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:47:42,607 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:48:29,631 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:48:29,664 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:48:29,665 logger          DEBUG    Start fit_transform
+2023-05-15 19:48:30,504 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:48:30,515 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:48:30,518 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:48:31,315 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:48:31,357 logger          DEBUG    2020_07_Juliol_BicingNou_ESTACIONS.csv
+2023-05-15 19:48:35,273 logger          DEBUG    Index to delete: 4134
+2023-05-15 19:48:35,653 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:48:35,870 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:49:29,657 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:49:29,701 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:49:29,704 logger          DEBUG    Start fit_transform
+2023-05-15 19:49:31,062 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:49:31,087 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:49:31,093 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:49:32,209 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:49:32,268 logger          DEBUG    2020_08_Agost_BicingNou_ESTACIONS.csv
+2023-05-15 19:49:36,089 logger          DEBUG    Index to delete: 3809
+2023-05-15 19:49:36,480 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:49:36,662 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:50:21,222 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:50:21,259 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:50:21,262 logger          DEBUG    Start fit_transform
+2023-05-15 19:50:22,041 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:50:22,055 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:50:22,056 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:50:22,771 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:50:22,816 logger          DEBUG    2020_09_Setembre_BicingNou_ESTACIONS.csv
+2023-05-15 19:50:26,680 logger          DEBUG    Index to delete: 9005
+2023-05-15 19:50:27,043 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:50:27,238 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:51:15,280 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:51:15,316 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:51:15,318 logger          DEBUG    Start fit_transform
+2023-05-15 19:51:16,134 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:51:16,146 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:51:16,147 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:51:16,880 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:51:16,926 logger          DEBUG    2020_10_Octubre_BicingNou_ESTACIONS.csv
+2023-05-15 19:51:21,209 logger          DEBUG    Index to delete: 11460
+2023-05-15 19:51:21,620 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:51:21,834 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:52:15,373 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:52:15,408 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:52:15,409 logger          DEBUG    Start fit_transform
+2023-05-15 19:52:16,321 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:52:16,337 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:52:16,338 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:52:17,146 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:52:17,215 logger          DEBUG    2020_11_Novembre_BicingNou_ESTACIONS.csv
+2023-05-15 19:52:20,652 logger          DEBUG    Index to delete: 15201
+2023-05-15 19:52:20,977 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:52:21,144 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:53:03,140 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:53:03,172 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:53:03,173 logger          DEBUG    Start fit_transform
+2023-05-15 19:53:03,942 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:53:03,951 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:53:03,952 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:53:04,616 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:53:04,660 logger          DEBUG    2020_12_Desembre_BicingNou_ESTACIONS.csv
+2023-05-15 19:53:09,058 logger          DEBUG    Index to delete: 6378
+2023-05-15 19:53:09,500 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:53:09,731 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:54:02,112 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:54:02,151 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:54:02,152 logger          DEBUG    Start fit_transform
+2023-05-15 19:54:03,157 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:54:03,178 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:54:03,180 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:54:04,169 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:54:04,229 logger          DEBUG    2021_01_Gener_BicingNou_ESTACIONS.csv
+2023-05-15 19:54:08,447 logger          DEBUG    Index to delete: 5832
+2023-05-15 19:54:08,917 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:54:09,176 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:55:03,727 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:55:03,765 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:55:03,766 logger          DEBUG    Start fit_transform
+2023-05-15 19:55:04,894 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:55:04,915 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:55:04,916 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:55:05,896 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:55:05,966 logger          DEBUG    2021_02_Febrer_BicingNou_ESTACIONS.csv
+2023-05-15 19:55:10,023 logger          DEBUG    Index to delete: 7595
+2023-05-15 19:55:10,438 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:55:10,685 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:56:01,362 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:56:01,411 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:56:01,413 logger          DEBUG    Start fit_transform
+2023-05-15 19:56:02,573 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:56:02,588 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:56:02,590 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:56:03,473 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:56:03,526 logger          DEBUG    2021_03_Març_BicingNou_ESTACIONS.csv
+2023-05-15 19:56:09,181 logger          DEBUG    Index to delete: 6216
+2023-05-15 19:56:09,809 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:56:10,143 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:57:06,610 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:57:06,648 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:57:06,649 logger          DEBUG    Start fit_transform
+2023-05-15 19:57:07,584 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:57:07,597 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:57:07,599 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:57:08,438 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:57:08,498 logger          DEBUG    2021_04_Abril_BicingNou_ESTACIONS.csv
+2023-05-15 19:57:12,761 logger          DEBUG    Index to delete: 5589
+2023-05-15 19:57:13,156 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:57:13,369 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:58:06,385 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:58:06,423 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:58:06,426 logger          DEBUG    Start fit_transform
+2023-05-15 19:58:07,370 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:58:07,383 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:58:07,385 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:58:08,200 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:58:08,253 logger          DEBUG    2021_05_Maig_BicingNou_ESTACIONS.csv
+2023-05-15 19:58:13,708 logger          DEBUG    Index to delete: 21359
+2023-05-15 19:58:14,137 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:58:14,379 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 19:59:04,282 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 19:59:04,319 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 19:59:04,320 logger          DEBUG    Start fit_transform
+2023-05-15 19:59:05,249 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 19:59:05,262 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 19:59:05,263 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 19:59:06,096 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 19:59:06,157 logger          DEBUG    2021_06_Juny_BicingNou_ESTACIONS.csv
+2023-05-15 19:59:10,272 logger          DEBUG    Index to delete: 13050
+2023-05-15 19:59:10,664 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 19:59:10,870 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:00:01,074 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:00:01,115 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:00:01,117 logger          DEBUG    Start fit_transform
+2023-05-15 20:00:02,304 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:00:02,321 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:00:02,324 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:00:03,300 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:00:03,356 logger          DEBUG    2021_07_Juliol_BicingNou_ESTACIONS.csv
+2023-05-15 20:00:08,129 logger          DEBUG    Index to delete: 2774
+2023-05-15 20:00:08,639 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:00:08,982 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:01:08,593 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:01:08,645 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:01:08,649 logger          DEBUG    Start fit_transform
+2023-05-15 20:01:10,379 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:01:10,405 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:01:10,409 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:01:11,714 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:01:11,807 logger          DEBUG    2021_08_Agost_BicingNou_ESTACIONS.csv
+2023-05-15 20:01:18,257 logger          DEBUG    Index to delete: 25843
+2023-05-15 20:01:18,777 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:01:19,138 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:02:11,381 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:02:11,419 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:02:11,420 logger          DEBUG    Start fit_transform
+2023-05-15 20:02:12,452 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:02:12,466 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:02:12,469 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:02:13,398 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:02:13,450 logger          DEBUG    2021_09_Setembre_BicingNou_ESTACIONS.csv
+2023-05-15 20:02:17,583 logger          DEBUG    Index to delete: 9422
+2023-05-15 20:02:18,048 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:02:18,290 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:03:13,749 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:03:13,787 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:03:13,789 logger          DEBUG    Start fit_transform
+2023-05-15 20:03:14,770 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:03:14,784 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:03:14,786 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:03:15,686 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:03:15,744 logger          DEBUG    2021_10_Octubre_BicingNou_ESTACIONS.csv
+2023-05-15 20:03:20,022 logger          DEBUG    Index to delete: 2520
+2023-05-15 20:03:20,483 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:03:20,743 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:04:17,472 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:04:17,516 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:04:17,517 logger          DEBUG    Start fit_transform
+2023-05-15 20:04:18,619 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:04:18,644 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:04:18,648 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:04:19,634 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:04:19,695 logger          DEBUG    2021_11_Novembre_BicingNou_ESTACIONS.csv
+2023-05-15 20:04:25,305 logger          DEBUG    Index to delete: 2307
+2023-05-15 20:04:25,811 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:04:26,243 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:05:19,021 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:05:19,058 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:05:19,061 logger          DEBUG    Start fit_transform
+2023-05-15 20:05:20,146 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:05:20,163 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:05:20,164 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:05:21,121 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:05:21,193 logger          DEBUG    2021_12_Desembre_BicingNou_ESTACIONS.csv
+2023-05-15 20:05:26,758 logger          DEBUG    Index to delete: 3464
+2023-05-15 20:05:27,218 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:05:27,522 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:06:23,806 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:06:23,867 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:06:23,869 logger          DEBUG    Start fit_transform
+2023-05-15 20:06:25,153 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:06:25,165 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:06:25,167 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:06:26,137 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:06:26,190 logger          DEBUG    2022_01_Gener_BicingNou_ESTACIONS.csv
+2023-05-15 20:06:30,914 logger          DEBUG    Index to delete: 2840
+2023-05-15 20:06:31,352 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:06:31,644 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:07:25,605 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:07:25,647 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:07:25,648 logger          DEBUG    Start fit_transform
+2023-05-15 20:07:26,647 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:07:26,664 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:07:26,666 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:07:27,595 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:07:27,654 logger          DEBUG    2022_02_Febrer_BicingNou_ESTACIONS.csv
+2023-05-15 20:07:32,166 logger          DEBUG    Index to delete: 2504
+2023-05-15 20:07:32,659 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:07:33,023 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:08:23,010 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:08:23,083 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:08:23,093 logger          DEBUG    Start fit_transform
+2023-05-15 20:08:24,363 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:08:24,385 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:08:24,389 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:08:25,570 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:08:25,640 logger          DEBUG    2022_03_Març_BicingNou_ESTACIONS.csv
+2023-05-15 20:08:34,858 logger          DEBUG    Index to delete: 1791
+2023-05-15 20:08:35,596 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:08:36,053 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:09:37,682 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:09:37,721 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:09:37,722 logger          DEBUG    Start fit_transform
+2023-05-15 20:09:38,937 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:09:38,963 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:09:38,967 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:09:40,134 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:09:40,200 logger          DEBUG    2022_04_Abril_BicingNou_ESTACIONS.csv
+2023-05-15 20:09:45,747 logger          DEBUG    Index to delete: 2806
+2023-05-15 20:09:46,397 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:09:46,779 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:10:38,506 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:10:38,548 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:10:38,550 logger          DEBUG    Start fit_transform
+2023-05-15 20:10:39,596 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:10:39,610 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:10:39,612 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:10:40,596 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:10:40,647 logger          DEBUG    2022_05_Maig_BicingNou_ESTACIONS.csv
+2023-05-15 20:10:46,335 logger          DEBUG    Index to delete: 3993
+2023-05-15 20:10:46,853 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:10:47,271 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:11:48,566 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:11:48,606 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:11:48,607 logger          DEBUG    Start fit_transform
+2023-05-15 20:11:49,822 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:11:49,838 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:11:49,840 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:11:50,940 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:11:51,017 logger          DEBUG    2022_06_Juny_BicingNou_ESTACIONS.csv
+2023-05-15 20:11:56,626 logger          DEBUG    Index to delete: 2709
+2023-05-15 20:11:57,155 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:11:57,543 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:12:57,277 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:12:57,332 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:12:57,334 logger          DEBUG    Start fit_transform
+2023-05-15 20:12:58,752 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:12:58,773 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:12:58,777 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:12:59,999 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:13:00,088 logger          DEBUG    2022_07_Juliol_BicingNou_ESTACIONS.csv
+2023-05-15 20:13:05,191 logger          DEBUG    Index to delete: 2146
+2023-05-15 20:13:05,719 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:13:06,058 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:14:09,916 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:14:09,961 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:14:09,964 logger          DEBUG    Start fit_transform
+2023-05-15 20:14:11,179 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:14:11,197 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:14:11,205 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:14:12,282 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:14:12,362 logger          DEBUG    2022_08_Agost_BicingNou_ESTACIONS.csv
+2023-05-15 20:14:18,201 logger          DEBUG    Index to delete: 2639
+2023-05-15 20:14:18,953 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:14:19,430 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:15:23,282 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:15:23,335 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:15:23,338 logger          DEBUG    Start fit_transform
+2023-05-15 20:15:25,283 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:15:25,309 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:15:25,312 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:15:26,640 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:15:26,739 logger          DEBUG    2022_09_Setembre_BicingNou_ESTACIONS.csv
+2023-05-15 20:15:34,972 logger          DEBUG    Index to delete: 3397
+2023-05-15 20:15:35,669 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:15:36,150 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:16:42,412 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:16:42,459 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:16:42,461 logger          DEBUG    Start fit_transform
+2023-05-15 20:16:43,701 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:16:43,721 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:16:43,731 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:16:44,772 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:16:44,842 logger          DEBUG    2022_10_Octubre_BicingNou_ESTACIONS.csv
+2023-05-15 20:16:50,263 logger          DEBUG    Index to delete: 3531
+2023-05-15 20:16:50,759 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:16:51,163 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:17:58,256 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:17:58,316 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:17:58,319 logger          DEBUG    Start fit_transform
+2023-05-15 20:17:59,830 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:17:59,859 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:17:59,874 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:18:01,464 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:18:01,552 logger          DEBUG    2022_11_Novembre_BicingNou_ESTACIONS.csv
+2023-05-15 20:18:08,881 logger          DEBUG    Index to delete: 4083
+2023-05-15 20:18:09,447 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:18:09,821 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:19:16,739 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:19:16,795 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:19:16,797 logger          DEBUG    Start fit_transform
+2023-05-15 20:19:18,274 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:19:18,297 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:19:18,312 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:19:19,679 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:19:19,795 logger          DEBUG    2022_12_Desembre_BicingNou_ESTACIONS.csv
+2023-05-15 20:19:26,757 logger          DEBUG    Index to delete: 2829
+2023-05-15 20:19:27,294 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:19:27,672 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:20:29,724 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:20:29,771 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:20:29,772 logger          DEBUG    Start fit_transform
+2023-05-15 20:20:30,955 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:20:30,968 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:20:30,971 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:20:32,008 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:20:32,078 logger          DEBUG    2023_01_Gener_BicingNou_ESTACIONS.csv
+2023-05-15 20:20:36,887 logger          DEBUG    Index to delete: 3311
+2023-05-15 20:20:37,469 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:20:37,798 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:21:35,559 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:21:35,613 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:21:35,630 logger          DEBUG    Start fit_transform
+2023-05-15 20:21:36,956 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:21:36,977 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:21:36,980 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:21:38,168 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:21:38,243 logger          DEBUG    2023_02_Febrer_BicingNou_ESTACIONS.csv
+2023-05-15 20:21:43,635 logger          DEBUG    Index to delete: 4039
+2023-05-15 20:21:44,146 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:21:44,574 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:22:38,526 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:22:38,570 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:22:38,571 logger          DEBUG    Start fit_transform
+2023-05-15 20:22:39,511 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:22:39,524 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:22:39,525 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:22:40,358 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:22:40,418 logger          DEBUG    2023_03_Marc_BicingNou_ESTACIONS.csv
+2023-05-15 20:22:45,010 logger          DEBUG    Index to delete: 3788
+2023-05-15 20:22:45,524 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:22:45,819 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:23:39,200 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:23:39,240 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:23:39,242 logger          DEBUG    Start fit_transform
+2023-05-15 20:23:40,534 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:23:40,550 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:23:40,552 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:23:41,545 logger          DEBUG    Data Frame from file {file} -> Completed!
+2023-05-15 20:23:41,604 logger          DEBUG    2023_04_Abril_BicingNou_ESTACIONS.csv
+2023-05-15 20:23:45,372 logger          DEBUG    Index to delete: 2159
+2023-05-15 20:23:45,756 logger          DEBUG    DeleteNotAvailableStationsRows -> Completed!
+2023-05-15 20:23:46,007 logger          DEBUG    DeleteNaNInRows -> Completed!
+2023-05-15 20:24:31,157 logger          DEBUG    TransformToTimestamp -> Completed!
+2023-05-15 20:24:31,193 logger          DEBUG    CreateRelativeOccupacyColumn -> Completed!
+2023-05-15 20:24:31,194 logger          DEBUG    Start fit_transform
+2023-05-15 20:24:32,026 logger          DEBUG    GroupAndAverage -> Completed!
+2023-05-15 20:24:32,041 logger          DEBUG    ShiftColumns -> Completed!
+2023-05-15 20:24:32,043 logger          DEBUG    PruneRows -> Completed!
+2023-05-15 20:24:32,763 logger          DEBUG    Data Frame from file {file} -> Completed!
