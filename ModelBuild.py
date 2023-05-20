@@ -19,13 +19,14 @@ loss = 'mean_square_error'
 optimizer = 'adam'
 epochs = 20
 batch_size = 500
+random_state = 800
 
 # Creem els conjunts de dades, les separem amb el train_test_split, i el parametre de test size per a 
 def build_train_test (data = data, features = features, to_predict = to_predict, test_size = test_size)
     X = data[features]
     y = data[to_predict]
 
-    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=test_size)
+    X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=test_size, random_state = random_state)
 
     scaler = StandardScaler()
 

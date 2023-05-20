@@ -4,13 +4,14 @@ import dash
 import plotly.express as px
 import pandas as pd
 
-from DataClean import reduce_dataset
+# from DataClean import reduce_dataset
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 df_to_read = pd.read_csv('./Data/INFO/2023_01_Gener_BicingNou_INFORMACIO.csv', decimal='.')
 
-df_to_map = reduce_dataset(df_to_read)
+df_length=df_to_read.shape[0]
+df_to_map = df_to_read.iloc[0:df_length:20]
 
 app = JupyterDash(__name__, external_stylesheets=external_stylesheets)
 
@@ -40,11 +41,11 @@ app.layout = html.Div([
     Input('my-range-slider-capacity', 'value')
     )
 def display_choropleth(value_capacity):
-#     pandas_filter = ((df_to_map['capacity']<=value_capacity[1]) &
-#                      (df_to_map['capacity']>=value_capacity[0]))
+    pandas_filter = ((df_to_map['capacity']<=value_capacity[1]) &
+                     (df_to_map['capacity']>=value_capacity[0]))
 
-    # fig = px.density_mapbox(df_to_map[pandas_filter],
-    fig = px.density_mapbox(df_to_map,
+    fig = px.density_mapbox(df_to_map[pandas_filter],
+    # fig = px.density_mapbox(df_to_map,
                             lat='lat', lon='lon', z='capacity',#z='altitude',
                             radius=5,
                             center=dict(lat=41.40, lon=2.17),
