@@ -4,14 +4,14 @@ from DataClean import clean_data_pipeline
 
 # sklearns imports
 import sklearn
-from sklearn import preprocessing
-from sklearn.preprocessing import StandardScaler
+from sklearn import set_config
 from sklearn.base import BaseEstimator, TransformerMixin # To create full custom transformers
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import FunctionTransformer
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import FeatureUnion
-from sklearn import set_config
+# from sklearn import preprocessing
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.preprocessing import FunctionTransformer
+# from sklearn.compose import ColumnTransformer
+# from sklearn.pipeline import FeatureUnion
 
 LOGGER_FILE = 'missages_datareestrucuture.log'
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
