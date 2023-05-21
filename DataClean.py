@@ -1,5 +1,6 @@
 import pandas as pd
 from logger import get_handler
+from DataFilesManager import get_stations_df
 from typing import List
 import random
 import numpy as np
@@ -97,6 +98,23 @@ class TransformToTimestamp(BaseEstimator, TransformerMixin):
             logger.debug('TransformToTimestamp -> Completed!')        
         return X
 
+class MergeStationsWithInfo(BaseEstimator, TransformerMixin):
+    def __init__(self, info:pd.DataFrame):
+        self.info = info
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            X = X.merge(right=self.info, on='station_id')
+        except Exception as e:
+            logger.debug(f'Error merging stations with info, exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('MergeStationsWithInfo -> Completed!')        
+        return X
+
 class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
@@ -114,7 +132,9 @@ class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
             logger.debug('CreateRelativeOccupacyColumn -> Completed!')        
         return X
 
-def clean_data_pipeline(columns_to_delete:List, valid_stations_id:List)->Pipeline:
+def clean_data_pipeline(columns_to_delete:List,
+                        valid_stations_id:List,
+                        stations_info:pd.DataFrame)->Pipeline:
 
     # Instantiacte transformers
     clean_NAS = DeleteNotAvailableStationsRows(valid_stations_id)
@@ -130,6 +150,7 @@ def clean_data_pipeline(columns_to_delete:List, valid_stations_id:List)->Pipelin
 
     clean_NaN = DeleteNaNInRows()
     DateTimeTransform = TransformToTimestamp()
+    MergeStationsInfo = MergeStationsWithInfo(info=stations_info)
     RelativeOccupacy = CreateRelativeOccupacyColumn()
 
     # Instantiate pipeline
@@ -138,6 +159,7 @@ def clean_data_pipeline(columns_to_delete:List, valid_stations_id:List)->Pipelin
         ('ColumnTransformer',first_pipeline),
         ('DeleteNaNInRows', clean_NaN),
         ('TransformDateTime', DateTimeTransform),
+        ('MergeStationsInfo', MergeStationsInfo),
         ('CreateRelativeOccupaceColumn',RelativeOccupacy),
     ])
 
@@ -146,6 +168,10 @@ def clean_data_pipeline(columns_to_delete:List, valid_stations_id:List)->Pipelin
 
 def main():
     df = pd.read_csv('./Data/STATIONS/2021_04_Abril_BicingNou_ESTACIONS.csv')
+    STATION_INFO_PATH = './Data/INFO/'
+    FILENAME = 'Informacio_Estacions_Bicing.json'
+    columns_to_get = ['station_id','lat','lon','capacity']
+    stations_info_df = get_stations_df(STATION_INFO_PATH+FILENAME,columns_to_get)
 
     # to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
     set_config(transform_output="pandas")
@@ -159,7 +185,9 @@ def main():
 
     columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
                          'is_installed','is_renting','is_returning', 'status']    
-    clean_pipline = clean_data_pipeline(columns_to_delete=columns_to_delete, valid_stations_id=valid_stations)
+    clean_pipline = clean_data_pipeline(columns_to_delete=columns_to_delete,
+                                        valid_stations_id=valid_stations,
+                                        stations_info=stations_info_df)
 
     logger.debug(f'Start fit_transform')
 
