@@ -19,9 +19,10 @@ INFO = './Data/INFO/'
 STATIONS_INFO_PATH = './Data/STATIONS/'
 STATIONS_INFO_CLEANED_PATH = './Data/STATIONS_CLEANED/'
 FILENAME = 'Informacio_Estacions_Bicing.json'
-COLUMNS_TO_GET_FROM_INFO = ['station_id','lat','lon','capacity']
-COLUMNS_TO_DELETE = ['last_reported', 'is_charging_station', 'ttl',
-                        'is_installed','is_renting','is_returning', 'status']   
+COLUMNS_TO_GET_FROM_INFO = ['station_id','lat','lon','capacity','altitude']
+COLUMNS_TO_KEEP = ['station_id','last_updated','num_bikes_available','num_docks_available']
+# COLUMNS_TO_DELETE = ['last_reported', 'is_charging_station', 'ttl',
+#                         'is_installed','is_renting','is_returning', 'status']   
 
 
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
@@ -55,7 +56,7 @@ def get_reestructured_df_from_file(file:str,
 
         # Clean df from bad data
         # clean_pipline = clean_data_pipeline(COLUMNS_TO_DELETE)   
-        clean_pipline = clean_data_pipeline(columns_to_delete=COLUMNS_TO_DELETE,
+        clean_pipline = clean_data_pipeline(columns_to_keep=COLUMNS_TO_KEEP,
                                         valid_stations_id=valid_stations,
                                         stations_info=stations_info_df)
         clean_df =clean_pipline.fit_transform(df)
@@ -89,7 +90,7 @@ def get_global_dataframe(files_path:str,
     '''
 
     files_list = get_all_files_under_path(files_path)
-    files_list = random.sample(files_list,5) # Only for teste purposes, else comented!
+    # files_list = random.sample(files_list,5) # Only for teste purposes, else comented!
 
     logger.debug(f'Files to convert: {files_list}')
     if original_files:

@@ -124,6 +124,9 @@ class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame):
         try:
+            # X['calculated_capacity']=X['num_bikes_available']+X['num_docks_available']
+            # X['max_capacity']=X[['capacity','calculated_capacity']].max(axis=1)            
+            # X['percentage_docks_available'] = X['num_docks_available']/(X['max_capacity'])
             X['percentage_docks_available'] = X['num_docks_available']/(X['num_bikes_available']+X['num_docks_available'])
         except Exception as e:
             logger.debug(f'Error obtaining relative occupacy, exception missage\n{str(e)}')
@@ -132,7 +135,7 @@ class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
             logger.debug('CreateRelativeOccupacyColumn -> Completed!')        
         return X
 
-def clean_data_pipeline(columns_to_delete:List,
+def clean_data_pipeline(columns_to_keep:List,
                         valid_stations_id:List,
                         stations_info:pd.DataFrame)->Pipeline:
 
@@ -141,10 +144,10 @@ def clean_data_pipeline(columns_to_delete:List,
 
     first_pipeline = ColumnTransformer(
         [# Ordered transformations
-        # ('Select', 'passthrough' ,columns_to_keep), -> equivalent to reminder='passthrough'
-        ('DeleteColumns', 'drop' ,columns_to_delete),
+        ('Select', 'passthrough' ,columns_to_keep), #-> equivalent to reminder='passthrough'
+        # ('DeleteColumns', 'drop' ,columns_to_keep),
         ],
-        remainder='passthrough',
+        remainder='drop',
         verbose_feature_names_out=False #-> to avoid changes in the column names.
         )
 
@@ -183,9 +186,11 @@ def main():
     logger.debug(f'Initial shape: {df.shape}')
     logger.debug(f'Initial columns: {df.columns}')
 
-    columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
-                         'is_installed','is_renting','is_returning', 'status']    
-    clean_pipline = clean_data_pipeline(columns_to_delete=columns_to_delete,
+    # columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
+    #                      'is_installed','is_renting','is_returning', 'status']    
+    columns_to_keep = ['station_id','last_updated','num_bikes_available','num_docks_available']
+
+    clean_pipline = clean_data_pipeline(columns_to_keep=columns_to_keep,
                                         valid_stations_id=valid_stations,
                                         stations_info=stations_info_df)
 
