@@ -83,13 +83,13 @@ def transform_data_pipeline()->Pipeline:
     prune_rows = PruneRows()
 
     # Instantiate pipeline
-    pipeline_all = Pipeline([
+    pipeline = Pipeline([
         ('GroupAndAverage',group_and_average),
         ('ShiftColumns',shift_columns),
         ('PruneRows',prune_rows),
     ])
 
-    return pipeline_all
+    return pipeline
 
 
 def main():

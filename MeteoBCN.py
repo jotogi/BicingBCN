@@ -24,4 +24,4 @@ def AssignWeatherStation(dfestacions):
     dfestacions['weather_station']=locations
     dfestacions['weather_station'].replace([0,1,2,3],['X4','X8','AN','D5'],inplace=True)
     
-    return df
+    return dfestacions

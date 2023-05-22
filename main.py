@@ -5,7 +5,7 @@ from logger import get_handler
 from DataClean import clean_data_pipeline
 from DataReestructure import transform_data_pipeline
 from DataFilesManager import get_stations_df
-
+from AddFeatures import run_pipeline
 
 # sklearns imports
 import sklearn
@@ -56,15 +56,15 @@ def get_reestructured_df_from_file(file:str,
 
         # Clean df from bad data
         # clean_pipline = clean_data_pipeline(COLUMNS_TO_DELETE)   
-        clean_pipline = clean_data_pipeline(columns_to_keep=COLUMNS_TO_KEEP,
+        clean_pipeline = clean_data_pipeline(columns_to_keep=COLUMNS_TO_KEEP,
                                         valid_stations_id=valid_stations,
                                         stations_info=stations_info_df)
-        clean_df =clean_pipline.fit_transform(df)
+        clean_df =clean_pipeline.fit_transform(df)
 
         # Transform df to a reduced df with the target columns
-        transformed_pipline = transform_data_pipeline()
+        transformed_pipeline = transform_data_pipeline()
         logger.debug(f'Start fit_transform')
-        transformed_df =transformed_pipline.fit_transform(clean_df)
+        transformed_df =transformed_pipeline.fit_transform(clean_df)
         transformed_df.to_csv(results_path+'CLEANED__'+file)
 
     except Exception as e:
@@ -103,36 +103,39 @@ def get_global_dataframe(files_path:str,
     
     return pd.concat(dataframe_list, axis=0)
 
-def run()->pd.DataFrame:
-    # Crear aquest systema de fitxers dins de la vostra carpeta de projecte
-    create_folder_structure(INFO)
-    create_folder_structure(STATIONS_INFO_PATH)
-    create_folder_structure(STATIONS_INFO_CLEANED_PATH)
-    # Copiar els fitxers de dades dins de la carpeta ./Data/STATIONS
+def run(generate_df=False)->pd.DataFrame:
+    if generate_df:
+        # Crear aquest systema de fitxers dins de la vostra carpeta de projecte
+        create_folder_structure(INFO)
+        create_folder_structure(STATIONS_INFO_PATH)
+        create_folder_structure(STATIONS_INFO_CLEANED_PATH)
+        # Copiar els fitxers de dades dins de la carpeta ./Data/STATIONS
 
-    # El primer cop que generem els df hem de posar 'original_files' = True.
-    # Això generearà un arxiu de dades "net" .csv per cada arxiu de dades original
-    # Fi només volem generear el dataframe global a partir dels arixius nets ja generats,
-    # hem de posar 'original_files' = False.
-
-
-    stations_info_df = get_stations_df(INFO+FILENAME,COLUMNS_TO_GET_FROM_INFO)
-    valid_stations = stations_info_df['station_id'].unique().tolist()
+        # El primer cop que generem els df hem de posar 'original_files' = True.
+        # Això generearà un arxiu de dades "net" .csv per cada arxiu de dades original
+        # Fi només volem generear el dataframe global a partir dels arixius nets ja generats,
+        # hem de posar 'original_files' = False.
 
 
-    globlal_df = get_global_dataframe(files_path= STATIONS_INFO_PATH,
-                                      original_files=True,
-                                      valid_stations=valid_stations,
-                                      stations_info_df=stations_info_df)
-
-    # Guardem el dataframe global en format .csv
-    globlal_df.to_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
-    return globlal_df     
+        stations_info_df = get_stations_df(INFO+FILENAME,COLUMNS_TO_GET_FROM_INFO)
+        valid_stations = stations_info_df['station_id'].unique().tolist()
 
 
+        globlal_df = get_global_dataframe(files_path= STATIONS_INFO_PATH,
+                                        original_files=True,
+                                        valid_stations=valid_stations,
+                                        stations_info_df=stations_info_df)
+
+        # Guardem el dataframe global en format .csv
+        globlal_df.to_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
+        return globlal_df     
+    else:
+        return pd.read_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
 
 def main():        
-     run()
-
+    global_df = run(generate_df=False)
+    Features_df = run_pipeline(global_df)
+    logger.debug(Features_df.columns)
+    
 if __name__ == '__main__':
     main()
