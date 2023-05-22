@@ -142,7 +142,7 @@ def clean_data_pipeline(columns_to_keep:List,
     # Instantiacte transformers
     clean_NAS = DeleteNotAvailableStationsRows(valid_stations_id)
 
-    first_pipeline = ColumnTransformer(
+    delete_columns_transformer = ColumnTransformer(
         [# Ordered transformations
         ('Select', 'passthrough' ,columns_to_keep), #-> equivalent to reminder='passthrough'
         # ('DeleteColumns', 'drop' ,columns_to_keep),
@@ -157,16 +157,16 @@ def clean_data_pipeline(columns_to_keep:List,
     RelativeOccupacy = CreateRelativeOccupacyColumn()
 
     # Instantiate pipeline
-    pipeline_all = Pipeline([
+    pipeline = Pipeline([
         ('DeleteNAS',clean_NAS),
-        ('ColumnTransformer',first_pipeline),
+        ('ColumnTransformer',delete_columns_transformer),
         ('DeleteNaNInRows', clean_NaN),
         ('TransformDateTime', DateTimeTransform),
         ('MergeStationsInfo', MergeStationsInfo),
         ('CreateRelativeOccupaceColumn',RelativeOccupacy),
     ])
 
-    return pipeline_all
+    return pipeline
 
 
 def main():
