@@ -48,5 +48,7 @@ def main():
     #X_test = full_pipeline.transform(dftotrain)
     features=['ctx-4','ctx-3','ctx-2','ctx-1']
     model = train_models(dftotrain,features,seed)
+    if not os.path.exists(f'data_bicing/submission'):
+        os.makedirs(f'data_bicing/submission', exist_ok=True)
     predict_bicing2023(features,model)
   
