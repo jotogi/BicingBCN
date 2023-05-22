@@ -122,10 +122,10 @@ def load_stations_loc_info(tosave=False):
     dfestacions = pd.read_json(f'data_bicing/Informacio_Estacions_Bicing.json',orient='records')
     info_estacions = pd.DataFrame.from_dict( dfestacions['data'][0] )
     # Els camps 'nearby_distance',	'_ride_code_support',	'rental_uris' i	'cross_street' no ens aporten res: 
-    #   o bé estan quasi buits o be valen sempre el mateix
-    # Ens quedem només amb els següents camps i salvem el fitxer
+    #   o bé estan quasi buits o be valen sempre el mateix. Els descartarem 
+    
+    df = assing_weather_station(df) #creem la columna 'wheather_station'
     df = info_estacions[['station_id','name','lat','lon','altitude','address','post_code','capacity','weather_station']]
-    df = assing_weather_station(df)
     # ho salvem tot
     if tosave:
         df.to_csv(f'data_bicing/Informacio_Estacions_Bicing.csv',index=False)
