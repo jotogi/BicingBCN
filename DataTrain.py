@@ -52,3 +52,5 @@ def main():
         os.makedirs(f'data_bicing/submission', exist_ok=True)
     predict_bicing2023(features,model)
   
+if __name__ == '__main__':
+    main()
