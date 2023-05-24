@@ -30,5 +30,5 @@ def count_trans_within_radius(row, est_bicing, radi):
 estacions_coords['n_transp_500m'] = estacions_coords.apply(count_trans_within_radius, args=(df_trans, 500), axis=1)
 
 # global_df_merged = global_df.merge(estacions_coords, on=['station_id','lat','lon'], how='left')
-estacions_coords.to_csv('bicing_transports.csv', index=False)
+estacions_coords.to_csv('.Data/bicing_transports.csv', index=False)
 
