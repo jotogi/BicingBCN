@@ -6,6 +6,7 @@ from DataClean import clean_data_pipeline
 from DataReestructure import transform_data_pipeline
 from DataFilesManager import get_stations_df
 from AddFeatures import run_pipeline
+from SplitData import split_data
 
 # sklearns imports
 import sklearn
@@ -21,9 +22,7 @@ STATIONS_INFO_CLEANED_PATH = './Data/STATIONS_CLEANED/'
 FILENAME = 'Informacio_Estacions_Bicing.json'
 COLUMNS_TO_GET_FROM_INFO = ['station_id','lat','lon','capacity','altitude']
 COLUMNS_TO_KEEP = ['station_id','last_updated','num_bikes_available','num_docks_available']
-# COLUMNS_TO_DELETE = ['last_reported', 'is_charging_station', 'ttl',
-#                         'is_installed','is_renting','is_returning', 'status']   
-
+COLUMNS_TO_STRATIFY = ['year' ,'month' ,'day' ,'hour'] # incloent station_id no funciona
 
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
 logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
@@ -132,10 +131,14 @@ def run(generate_df=False)->pd.DataFrame:
     else:
         return pd.read_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv')
 
+
+
 def main():        
     global_df = run(generate_df=False)
     Features_df = run_pipeline(global_df)
     logger.debug(Features_df.columns)
+    strat_train_set, strat_validation_set = split_data(Features_df, COLUMNS_TO_STRATIFY)
+    logger.debug(strat_train_set.columns)
     
 if __name__ == '__main__':
     main()
