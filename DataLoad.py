@@ -7,16 +7,8 @@ from MeteoBCN import assing_weather_station
 
 # Global variables
 seed=42
+np.random.seed(42)
 
-YEARS = [2019,2020,2021,2022] 
-i2m = list(zip(range(1,13), ['Gener','Febrer','Març','Abril','Maig','Juny','Juliol','Agost','Setembre','Octubre','Novembre','Desembre']))
-i2m19 = list(zip(range(3,13), ['Març','Abril','Maig','Juny','Juliol','Agost','Setembre','Octubre','Novembre','Desembre']))
-d1 = {
-  2019: i2m19,
-  2020: i2m,
-  2021: i2m,
-  2022: i2m
-}
 
 def read_table(year, month, month_name):
     """
