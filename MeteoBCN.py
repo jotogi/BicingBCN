@@ -98,7 +98,11 @@ def transform_meteocat_month_data(df_meteo,nom_meteo):
         df.to_csv(f'{path}{nom}/All_MeteoBCN{nom}.csv',index=False)
     return df
   
-  
+def load_meteocat_station_all(path='./data_meteo/'):
+    # el nom de l'estació és: 'nom de l'estació'_'codi de l'estació'
+    return pd.concat([load_meteocat_station(True, estacions_meteo_BCN.iloc[i,1]+'_'+estacions_meteo_BCN.iloc[i,0]) \
+            for i in range (0,3)])
+        
 def AssignWeatherStation(dfestacions):
   
     meteo_loc = estacions_meteo_BCN[['lon', 'lat']].values
@@ -109,15 +113,21 @@ def AssignWeatherStation(dfestacions):
     dfestacions['weather_station'].replace([0,1,2,3],['X4','X8','AN','D5'],inplace=True)
     
     return dfestacions
+
+def AssignWeatherVariables(dfbicing):
+  
+    dfvariables = load_meteocat_station_all('./DATA/METEO/')
+    dfbicing = dfbicing.merge(dfvariables, left_on=['year','month','day','hour','weather_station'],right_on=['year','month','day','hour','wstationID'])
+    
+    return dfbicing
   
   
 def main():
-  #de moment només he tingut autorització per baixar dades d'una estació. Si m'amplien l'autorització, podrem baixar la resta
-  i=0 #Raval
-  estació_meteo=estacions_meteo_BCN.iloc[i,1]+'_'+estacions_meteo_BCN.iloc[i,0]
+
   if not os.path.exists(f'./DATA/METEO/'):
             os.makedirs(f'./DATA/METEO/')
-  download_meteo_data_station('./DATA/METEO/', estacio_meteo)
-  load_meteocat_station(True,'./DATA/METEO/', estació_meteo)
+  #download_meteocat_data_all('./DATA/METEO/')
                         
                    
+if __name__=='__main__':
+    main()
