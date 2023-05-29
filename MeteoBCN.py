@@ -9,7 +9,7 @@ from scipy.spatial import distance_matrix
 #Estacions meteo automàtiques de Barcelona
 estacions_meteo_BCN = [('X4', 'Raval', '41.3839', '2.16775'),
 ('X8', 'ZonaUniversitaria','41.37919', '2.1054'),
-('X2', 'Ciutadella', '41.38943','2.18847'),
+#('X2', 'Ciutadella', '41.38943','2.18847'),
 ('D5', 'Tibidabo', '41.41843','2.12388')]
 
 estacions_meteo_BCN = pd.DataFrame(estacions_meteo_BCN, columns = ['wstation_id', 'name', 'lat', 'lon'])
