@@ -51,12 +51,12 @@ def add_features_data_pipeline()->Pipeline:
 
     # Instantiacte transformers
     
-    weather_feature = Weather()
+    # weather_feature = Weather()
     public_transport = Transports()
 
     # Instantiate pipeline
     pipeline = Pipeline([
-        ('Weather',weather_feature),
+        # ('Weather',weather_feature),
         ('Transports',public_transport)
     ])
 
@@ -75,7 +75,7 @@ def main():
     Features_df = run_pipeline(global_df)
     logger.debug(type(Features_df))
     logger.debug(Features_df.columns)
-    global_df.to_csv('./Data/STATIONS_CLEANED/global_df_features.csv', index=False)
+    Features_df.to_csv('./Data/STATIONS_CLEANED/global_df_features.csv', index=False)
 
     
 
