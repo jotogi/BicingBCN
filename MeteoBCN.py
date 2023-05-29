@@ -7,12 +7,12 @@ from tqdm.notebook import tqdm
 from scipy.spatial import distance_matrix
 
 #Estacions meteo automàtiques de Barcelona
-estacions_meteo_BCN_list = [('X4', 'Raval', '41.3839', '2.16775'),
-('X8', 'Zona Universitaria','41.37919', '2.1054'),
-('AN', 'Ciutadella', '41.39004','2.18091'),
+estacions_meteo_BCN = [('X4', 'Raval', '41.3839', '2.16775'),
+('X8', 'ZonaUniversitaria','41.37919', '2.1054'),
+('X2', 'Ciutadella', '41.38943','2.18847'),
 ('D5', 'Tibidabo', '41.41843','2.12388')]
 
-estacions_meteo_BCN = pd.DataFrame(estacions_meteo_BCN_list, columns = ['weather_station_ID', 'name', 'lat', 'lon'])
+estacions_meteo_BCN = pd.DataFrame(estacions_meteo_BCN, columns = ['wstation_id', 'name', 'lat', 'lon'])
 estacions_meteo_BCN['lat'] = estacions_meteo_BCN['lat'].astype(float)
 estacions_meteo_BCN['lon'] = estacions_meteo_BCN['lon'].astype(float)
 
@@ -104,13 +104,17 @@ def load_meteocat_station_all(path='./data_meteo/'):
             for i in range (0,3)])
         
 def AssignWeatherStation(dfestacions):
-  
+    """
+    Function that calculates and assigns the closest barcelona weather station to each bike station
+    This information is returned as a new column in dfestacions
+    """
     meteo_loc = estacions_meteo_BCN[['lon', 'lat']].values
     bicing_loc = dfestacions[['lon', 'lat']].values
     dist = distance_matrix(bicing_loc, meteo_loc)
     locations = dist.argmin(1)
-    dfestacions['weather_station']=locations
-    dfestacions['weather_station'].replace([0,1,2,3],['X4','X8','AN','D5'],inplace=True)
+    dfestacions['wstation_id']=locations
+    info_estacions['wstation_id'].replace([0,1,2,3],estacions_meteo_BCN['wstation_id'],inplace=True)
+    return df
     
     return dfestacions
 
