@@ -29,10 +29,10 @@ def get_meteocat_day_data(codi, year, month, day):
     NOTE: the number of queries to meteocat site is limited in the time, hence we save the info in csv files
     """
     url_i = url0+'/{}/{}/{:02d}/{:02d}'.format(codi,year,month,day)
-    
+    print(url_i)
     response_i = requests.get(url_i, headers={"Content-Type": "application/json", "X-Api-Key": key})
 
-    assert (response_i.status_code == 200)
+    assert (response_i.status_code == 200), f"response status code: {response_i.status_code}"
     
     dbmet = pd.read_json(response_i.text)
     return  pd.json_normalize(dbmet['variables'][0], record_path=['lectures'],meta=['codi'])
