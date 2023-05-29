@@ -1,6 +1,8 @@
 import pandas as pd
 from logger import get_handler
 from MeteoBCN import AssignWeatherStation
+from MeteoBCN import AssignWeatherVariables
+from MeteoBCN import load_meteocat_stations_data
 from transportsBCN import PublicTransports
 from beachesBCN import DistToBeach
 
@@ -16,7 +18,7 @@ logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__versio
 
 class Weather(BaseEstimator, TransformerMixin):
     def __init__(self):
-        pass
+        self.meteoDF = load_meteocat_stations_data()
         
     def fit(self, X, y=None):
         return self  # nothing else to do
@@ -24,6 +26,7 @@ class Weather(BaseEstimator, TransformerMixin):
     def transform(self, X:pd.DataFrame):
         try:
             X = AssignWeatherStation(X)
+            X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
             logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
             raise e
