@@ -2,6 +2,7 @@ import pandas as pd
 from logger import get_handler
 from MeteoBCN import AssignWeatherStation
 from transportsBCN import PublicTransports
+from beachesBCN import DistToBeach
 
 # sklearns imports
 import sklearn
@@ -47,17 +48,36 @@ class Transports(BaseEstimator, TransformerMixin):
             logger.debug('add public transports feature -> Completed!')        
         return X    
 
+class Beaches(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            X = DistToBeach(X)
+        except Exception as e:
+            logger.debug(f'Error including distance to nearest beach feature to df, exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('add distance to nearest beach -> Completed!')        
+        return X    
+
 def add_features_data_pipeline()->Pipeline:
 
     # Instantiacte transformers
     
     # weather_feature = Weather()
     public_transport = Transports()
+    dist_to_beach = Beaches()
 
     # Instantiate pipeline
     pipeline = Pipeline([
         # ('Weather',weather_feature),
-        ('Transports',public_transport)
+        ('Transports', public_transport),
+        ('Beach', dist_to_beach)
     ])
 
     return pipeline
@@ -76,7 +96,8 @@ def main():
     logger.debug(type(Features_df))
     logger.debug(Features_df.columns)
     Features_df.to_csv('./Data/STATIONS_CLEANED/global_df_features.csv', index=False)
-
+    print(Features_df.head())
+    print(Features_df.info())
     
 
 if __name__=='__main__':
