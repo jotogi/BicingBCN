@@ -117,10 +117,8 @@ def AssignWeatherStation(dfestacions):
     
     return dfestacions
 
-def AssignWeatherVariables(dfbicing):
-  
-    dfvariables = load_meteocat_stations_data()
-    dfbicing = dfbicing.merge(dfvariables, left_on=['year','month','day','hour','wstation_id'],right_on=['year','month','day','hour','wstation_id'])
+def AssignWeatherVariables(dfbicing,dfmeteovar):
+    dfbicing = dfbicing.merge(dfmeteovar, left_on=['year','month','day','hour','wstation_id'],right_on=['year','month','day','hour','wstation_id'])
     return dfbicing
   
   
