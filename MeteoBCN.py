@@ -110,8 +110,9 @@ def AssignWeatherStation(dfestacions):
     bicing_loc = dfestacions[['lon', 'lat']].values
     dist = distance_matrix(bicing_loc, meteo_loc)
     locations = dist.argmin(1)
-    dfestacions['wstation_id']=locations
-    info_estacions['wstation_id'].replace([0,1,2,3],estacions_meteo_BCN['wstation_id'],inplace=True)
+    dfestacions['wstation_id']=locations #els index estacions_meteo:BCN
+    #reemplacem [0,1,...] per ['X4,'X8',..]
+    info_estacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
     return df
     
     return dfestacions
