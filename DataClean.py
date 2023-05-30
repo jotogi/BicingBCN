@@ -48,7 +48,7 @@ class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
             df_index_to_filter = X[df_filter].index
             logger.debug(f'Index to delete: {len(df_index_to_filter)}')
             X.drop(index=df_index_to_filter,
-                   axis = 1,
+                #    axis = 1,
                    inplace = True,
                    errors = 'ignore')
         except Exception as e:
