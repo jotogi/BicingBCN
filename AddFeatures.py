@@ -31,7 +31,7 @@ class Weather(BaseEstimator, TransformerMixin):
             logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('GroupAndAverage -> Completed!')        
+            logger.debug('Add wheather features -> Completed!')        
         return X
 
 class Transports(BaseEstimator, TransformerMixin):
