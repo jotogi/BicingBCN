@@ -98,7 +98,8 @@ def transform_meteocat_station_data(tosave,path,nom,nid):
     return df
   
 def load_meteocat_stations_data(path='./data_meteo/'):
-    return pd.concat([pd.read_csv(f'{path}/All_MeteoBCN{estacions_meteo_BCN[i,1]}_{estacions_meteo_BCN[i,0]}.csv') for i in range (0,estacions_meteo_BCN.shape[0])])
+    return pd.concat([pd.read_csv(f'{path}/All_MeteoBCN{estacions_meteo_BCN.iloc[i,1]}_{estacions_meteo_BCN.iloc[i,0]}.csv') \
+                      for i in range(0,estacions_meteo_BCN.shape[0])])
 
         
 def AssignWeatherStation(dfestacions):
