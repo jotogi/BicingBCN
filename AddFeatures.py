@@ -1,6 +1,6 @@
 import pandas as pd
 from logger import get_handler
-from MeteoBCN import AssignWeatherStation
+from MeteoBCN import AssignWeatherStation_global_df
 from MeteoBCN import AssignWeatherVariables
 from MeteoBCN import load_meteocat_stations_data
 from transportsBCN import PublicTransports
@@ -25,7 +25,7 @@ class Weather(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame):
         try:
-            X = AssignWeatherStation(X)
+            X = AssignWeatherStation_global_df(X)
             X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
             logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
