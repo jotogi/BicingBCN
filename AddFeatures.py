@@ -17,7 +17,7 @@ logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
 logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
 class Weather(BaseEstimator, TransformerMixin):
-    def __init__(self):
+    def __init__(self,meteoDF=pd.DataFrame()):
         self.meteoDF = load_meteocat_stations_data()
         
     def fit(self, X, y=None):
@@ -72,13 +72,13 @@ def add_features_data_pipeline()->Pipeline:
 
     # Instantiacte transformers
     
-    # weather_feature = Weather()
+    weather_feature = Weather()
     public_transport = Transports()
     dist_to_beach = Beaches()
 
     # Instantiate pipeline
     pipeline = Pipeline([
-        # ('Weather',weather_feature),
+        ('Weather',weather_feature),
         ('Transports', public_transport),
         ('Beach', dist_to_beach)
     ])
