@@ -115,7 +115,7 @@ def AssignWeatherStation(dfestacions):
     dfestacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
     return dfestacions
 
-def AssignWeatherStation_to_global_df(dfglobal):
+def AssignWeatherStation_global_df(dfglobal):
     """
     Function that calculates and assigns the closest barcelona weather station to each bike station
     This information is returned as a new column in global_df
