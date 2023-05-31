@@ -102,7 +102,7 @@ def load_meteocat_stations_data(path='./data_meteo/'):
                       for i in range(0,estacions_meteo_BCN.shape[0])])
 
         
-def AssignWeatherStation(dfestacions):
+def AddWeatherStationToBicingInfo(dfestacions):
     """
     Function that calculates and assigns the closest barcelona weather station to each bike station
     This information is returned as a new column in dfestacions
@@ -111,10 +111,18 @@ def AssignWeatherStation(dfestacions):
     bicing_loc = dfestacions[['lon', 'lat']].values
     dist = distance_matrix(bicing_loc, meteo_loc)
     locations = dist.argmin(1)
-    dfestacions['wstation_id']=locations #els index estacions_meteo_BCN
+    dfestacions['wstation_id']=locations #els index estacions_meteo:BCN
     #reemplacem [0,1,...] per ['X4,'X8',..]
     dfestacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
     return dfestacions
+
+def AssignWeatherStation(dfbicing):
+    """
+    Function that add weather station identifier to bicing dataframe 
+    """
+    dfestacions=pd.read_csv(f'./data_bicing/Informacio_Estacions_Bicing.csv',index=False)
+    dfbicing.merge(dfestacions[['station_id','wstation_id']])
+    return dfbicing
 
 def AssignWeatherStation_global_df(dfglobal):
     """
