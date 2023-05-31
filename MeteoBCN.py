@@ -110,12 +110,25 @@ def AssignWeatherStation(dfestacions):
     bicing_loc = dfestacions[['lon', 'lat']].values
     dist = distance_matrix(bicing_loc, meteo_loc)
     locations = dist.argmin(1)
-    dfestacions['wstation_id']=locations #els index estacions_meteo:BCN
+    dfestacions['wstation_id']=locations #els index estacions_meteo_BCN
     #reemplacem [0,1,...] per ['X4,'X8',..]
-    info_estacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
-    return df
-    
+    dfestacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
     return dfestacions
+
+def AssignWeatherStation_to_global_df(dfglobal):
+    """
+    Function that calculates and assigns the closest barcelona weather station to each bike station
+    This information is returned as a new column in global_df
+    """
+    meteo_loc = estacions_meteo_BCN[['lon', 'lat']].values
+    bicing_loc = dfglobal[['station_id','lon', 'lat']].values.drop_duplicates()
+    dist = distance_matrix(bicing_loc[['lon','lat']].values, meteo_loc)
+    locations = dist.argmin(1)
+    bicing_loc['wstation_id']=locations #els index estacions_meteo:BCN
+    #reemplacem [0,1,...] per ['X4,'X8',..]
+    bicing_loc['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
+    dfglobal = dfglobal.merge(bicing_loc, on=['station_id','lon','lat'], how='left')
+    return dfglobal
 
 def AssignWeatherVariables(dfbicing,dfmeteovar):
     dfbicing = dfbicing.merge(dfmeteovar, left_on=['year','month','day','hour','wstation_id'],right_on=['year','month','day','hour','wstation_id'])
