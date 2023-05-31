@@ -121,7 +121,7 @@ def AssignWeatherStation(dfbicing):
     Function that add weather station identifier to bicing dataframe 
     """
     dfestacions=pd.read_csv(f'./data_bicing/Informacio_Estacions_Bicing.csv')
-    dfbicing.merge(dfestacions[['station_id','wstation_id']])
+    dfbicing = dfbicing.merge(dfestacions[['station_id','wstation_id']])
     return dfbicing
 
 def AssignWeatherStation_global_df(dfglobal):
@@ -140,7 +140,9 @@ def AssignWeatherStation_global_df(dfglobal):
     return dfglobal
 
 def AssignWeatherVariables(dfbicing,dfmeteovar):
+  
     dfbicing = dfbicing.merge(dfmeteovar, left_on=['year','month','day','hour','wstation_id'],right_on=['year','month','day','hour','wstation_id'])
+    dfbicing = dfbicing.drop('wstation_id',axis=1,inplace=True)
     return dfbicing
   
   
