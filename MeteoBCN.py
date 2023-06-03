@@ -139,9 +139,10 @@ def AssignWeatherStation_global_df(dfglobal):
     dfglobal = dfglobal.merge(bicing_loc, on=['station_id','lon','lat'], how='left')
     return dfglobal
 
+
 def AssignWeatherVariables(dfbicing,dfmeteovar):
   
-    dfbicing = dfbicing.merge(dfmeteovar, left_on=['year','month','day','hour','wstation_id'],right_on=['year','month','day','hour','wstation_id'])
+    dfbicing = dfbicing.merge(dfmeteovar, on=['year','month','day','hour','wstation_id'],how='left')
     dfbicing.drop(columns=['wstation_id'],inplace=True)
     return dfbicing
   
