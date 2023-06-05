@@ -3,6 +3,7 @@ from logger import get_handler
 from MeteoBCN import AssignWeatherStation_global_df
 from MeteoBCN import AssignWeatherVariables
 from MeteoBCN import load_meteocat_stations_data
+from DataLoad import restore_stations_loc_info
 from transportsBCN import PublicTransports
 from beachesBCN import DistToBeach
 
@@ -34,6 +35,23 @@ class Weather(BaseEstimator, TransformerMixin):
             logger.debug('Add wheather features -> Completed!')        
         return X
 
+class InfoBicing(BaseEstimator, TransformerMixin):
+    def __init__(self,infoDF=pd.DataFrame()):
+        self.infoDF = restore_stations_loc_info()
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame, predict=False):
+        try:
+            X = X.merge(self.infoDF[['station_id','capacity','altitude']],on=['station_id'],how='left')              
+        except Exception as e:
+            logger.debug(f'Error including stations info features to df, exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('Add stations info features -> Completed!')        
+        return X
+    
 class Transports(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
