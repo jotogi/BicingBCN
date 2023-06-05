@@ -3,7 +3,7 @@ import numpy as np
 import os
 from tqdm.notebook import tqdm
 
-from MeteoBCN import assing_weather_station
+from MeteoBCN import AssignWeatherStation
 
 # Global variables
 seed=42
@@ -133,8 +133,8 @@ def load_stations_loc_info(tosave=False):
     # Els camps 'nearby_distance',	'_ride_code_support',	'rental_uris' i	'cross_street' no ens aporten res: 
     #   o bé estan quasi buits o be valen sempre el mateix. Els descartarem 
     
-    df = assing_weather_station(df) #creem la columna 'wheather_station'
-    df = info_estacions[['station_id','name','lat','lon','altitude','address','post_code','capacity','weather_station']]
+    df = AssignWeatherStation(df) #creem la columna 'wheather_station'
+    df = info_estacions[['station_id','name','lat','lon','altitude','address','post_code','capacity','wstation_id']]
     # ho salvem tot
     if tosave:
         df.to_csv(f'data_bicing/Informacio_Estacions_Bicing.csv',index=False)
