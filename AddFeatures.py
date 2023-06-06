@@ -28,6 +28,7 @@ class Weather(BaseEstimator, TransformerMixin):
     def transform(self, X:pd.DataFrame):
         try:
             X = AssignWeatherStation_global_df(X)
+            #X = AssignWeatherStation(X)
             X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
             logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
