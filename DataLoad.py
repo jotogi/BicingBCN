@@ -55,12 +55,12 @@ def clean_and_process_year(dfyear,ids):
     
 def transform(df,dfs):
     """
-    Function that transfors df -cleaned bicing DataFrame- and transforms it to a DataFrame ready for training
+    Function that loads cleaned bicing DataFrame (df) and transforms it into a DataFrame ready for training
     """    
     #Eliminem les columnes que no ens interessen ara pel training
     #df.drop(columns=['num_bikes_available','num_bikes_available_types.mechanical','num_bikes_available_types.ebike','min'],inplace=True)
     col_del = ['num_bikes_available','num_bikes_available_types.mechanical','num_bikes_available_types.ebike','min'] 
-    col_to_del = [c for c in col_del if c in bicing2.columns]
+    col_to_del = [c for c in col_del if c in df.columns]
     if len(col_to_del)>0: print('hi ha {} columnes a esborrar'.format(len(col_to_del)))
         
     if len(col_to_del)>0: 
