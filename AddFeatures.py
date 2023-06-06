@@ -1,6 +1,7 @@
 import pandas as pd
 from logger import get_handler
 from MeteoBCN import AssignWeatherStation_global_df
+#from MeteoBCN import AssignWeatherStation
 from MeteoBCN import AssignWeatherVariables
 from MeteoBCN import load_meteocat_stations_data
 from DataLoad import restore_stations_loc_info
