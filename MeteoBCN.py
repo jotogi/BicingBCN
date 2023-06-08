@@ -163,7 +163,6 @@ def AssignWeatherVariablesByStation(dfbicing,dfmeteovar):
 def AssignWeatherVariables(dfbicing,dfmeteovar):
     
     dfbicing = dfbicing.merge(dfmeteovar, on=['year','month','day','hour'],how='left')
-    dfbicing.drop(columns=['wstation_id'],inplace=True)
     return dfbicing
   
   
