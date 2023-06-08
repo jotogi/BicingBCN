@@ -1,9 +1,9 @@
 import pandas as pd
 from logger import get_handler
-from MeteoBCN import AssignWeatherStation_global_df
+#from MeteoBCN import AssignWeatherStation_global_df
 #from MeteoBCN import AssignWeatherStation
 from MeteoBCN import AssignWeatherVariables
-from MeteoBCN import load_meteocat_stations_data
+from MeteoBCN import load_meteocat_data
 from DataLoad import restore_stations_loc_info
 from transportsBCN import PublicTransports
 from beachesBCN import DistToBeach
@@ -20,14 +20,14 @@ logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__versio
 
 class Weather(BaseEstimator, TransformerMixin):
     def __init__(self,meteoDF=pd.DataFrame()):
-        self.meteoDF = load_meteocat_stations_data()
+        self.meteoDF = load_meteocat_data()
         
     def fit(self, X, y=None):
         return self  # nothing else to do
     
     def transform(self, X:pd.DataFrame):
         try:
-            X = AssignWeatherStation_global_df(X)
+            #X = AssignWeatherStation_global_df(X)
             #X = AssignWeatherStation(X)
             X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
@@ -46,7 +46,7 @@ class InfoBicing(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame, predict=False):
         try:
-            X = X.merge(self.infoDF[['station_id','capacity','altitude']],on=['station_id'],how='left')              
+            X = X.merge(self.infoDF[['station_id','capacity','altitude','n_transp_500m','min_dist_to_beach']],on=['station_id'],how='left')              
         except Exception as e:
             logger.debug(f'Error including stations info features to df, exception missage\n{str(e)}')
             raise e
