@@ -3,7 +3,7 @@ import numpy as np
 import os
 from tqdm.notebook import tqdm
 
-from MeteoBCN import assing_weather_station
+from MeteoBCN import AssignWeatherStation
 
 # Global variables
 seed=42
@@ -55,12 +55,12 @@ def clean_and_process_year(dfyear,ids):
     
 def transform(df,dfs):
     """
-    Function that transfors df -cleaned bicing DataFrame- and transforms it to a DataFrame ready for training
+    Function that loads cleaned bicing DataFrame (df) and transforms it into a DataFrame ready for training
     """    
     #Eliminem les columnes que no ens interessen ara pel training
     #df.drop(columns=['num_bikes_available','num_bikes_available_types.mechanical','num_bikes_available_types.ebike','min'],inplace=True)
     col_del = ['num_bikes_available','num_bikes_available_types.mechanical','num_bikes_available_types.ebike','min'] 
-    col_to_del = [c for c in col_del if c in bicing2.columns]
+    col_to_del = [c for c in col_del if c in df.columns]
     if len(col_to_del)>0: print('hi ha {} columnes a esborrar'.format(len(col_to_del)))
         
     if len(col_to_del)>0: 
@@ -133,12 +133,94 @@ def load_stations_loc_info(tosave=False):
     # Els camps 'nearby_distance',	'_ride_code_support',	'rental_uris' i	'cross_street' no ens aporten res: 
     #   o bé estan quasi buits o be valen sempre el mateix. Els descartarem 
     
-    df = assing_weather_station(df) #creem la columna 'wheather_station'
-    df = info_estacions[['station_id','name','lat','lon','altitude','address','post_code','capacity','weather_station']]
+    df = AssignWeatherStation(df) #creem la columna 'wheather_station'
+    df = info_estacions[['station_id','name','lat','lon','altitude','address','post_code','capacity','wstation_id']]
     # ho salvem tot
     if tosave:
         df.to_csv(f'data_bicing/Informacio_Estacions_Bicing.csv',index=False)
     return df
+
+def load_holidaysBCN():
+    dates_vacances = [
+        '2019-01-01',
+        '2019-01-05',
+        '2019-04-19',
+        '2019-04-22',
+        '2019-05-01',
+        '2019-06-10',
+        '2019-06-24',
+        '2019-08-15',
+        '2019-09-11',
+        '2019-10-12',
+        '2019-11-01',
+        '2019-12-06',
+        '2019-12-25',
+        '2019-12-26',
+        '2020-01-01',
+        '2020-01-06',
+        '2020-04-10',
+        '2020-04-13',
+        '2020-05-01',
+        '2020-06-01',
+        '2020-06-24',
+        '2020-08-15',
+        '2020-09-11',
+        '2020-10-12',
+        '2020-11-01',
+        '2020-12-08',
+        '2020-12-25',
+        '2020-12-26',
+        '2021-01-01',
+        '2021-01-06',
+        '2021-04-02',
+        '2021-04-05',
+        '2021-05-01',
+        '2021-05-24',
+        '2021-06-24',
+        '2021-09-11',
+        '2021-10-12',
+        '2021-11-01',
+        '2021-12-06',
+        '2021-12-08',
+        '2021-12-25',
+        '2021-12-26',
+        '2022-01-01',
+        '2022-01-06',
+        '2022-04-15',
+        '2022-04-18',
+        '2022-06-06',
+        '2022-06-24',
+        '2022-08-15',
+        '2022-09-24',
+        '2022-09-26',
+        '2022-10-12',
+        '2022-11-01',
+        '2022-12-06',
+        '2022-12-08',
+        '2022-12-26',  
+        '2023-01-06',
+        '2023-04-07',
+        '2023-04-10',
+        '2023-05-01',
+        '2023-06-05',
+        '2023-06-24',
+        '2023-08-15',
+        '2023-09-11',
+        '2023-09-25',
+        '2023-10-12',
+        '2023-11-01',
+        '2023-12-06',
+        '2023-12-08',
+        '2023-12-25',
+        '2023-12-26'
+    ]
+    #holidaysDF=pd.DataFrame(dates_vacances,columns=['date'])
+    #holidaysDF['year']= pd.to_datetime(holidaysDF.date,dayfirst=True).dt.year
+    #holidaysDF['month']= pd.to_datetime(holidaysDF.date,dayfirst=True).dt.month
+    #holidaysDF['day']= pd.to_datetime(holidaysDF.date,dayfirst=True).dt.day
+   # holidaysDF['holiday'] = 1
+    return dates_vacances
+
 
 def main():
   

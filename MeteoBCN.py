@@ -65,7 +65,7 @@ def download_meteocat_data_all(path='./data_meteo/'):
         download_meteocat_data_station(path, estacions_meteo_BCN.iloc[i,1],estacions_meteo_BCN.iloc[i,0])
 
         
-def transform_meteocat_month_data(df_meteo,stacio_met_id):
+def transform_meteocat_month_data(df_meteo,stacio_met_id,tz=False):
     """
     Function that transforms downloaded meteocat data in a format convenient for the purpose of this project 
     """      
@@ -76,6 +76,10 @@ def transform_meteocat_month_data(df_meteo,stacio_met_id):
     df_new = df_new.iloc[0:df_new.shape[0]:2]
     #creem el camp ID de l'estació per poder distingir quan les dades estiguin totes juntes en un sol dataframe
     df_new.insert(1,'wstation_id', stacio_met_id)
+    if tz :
+        #transformem el temps com UTC a Europe/Madrid TZ
+        df_new['data'] = pd.to_datetime(df_new.data)
+        df_new['data'] = df_new['data'].apply(lambda x: pd.to_datetime(x).astimezone(tz='Europe/Madrid'))
     #creem els camps year,month,day,hour a partir de data
     df_new.insert(1,'hour',pd.to_datetime(df_new.data).dt.hour)
     df_new.insert(1,'day',pd.to_datetime(df_new.data).dt.day)
@@ -83,25 +87,37 @@ def transform_meteocat_month_data(df_meteo,stacio_met_id):
     df_new.insert(1,'year',pd.to_datetime(df_new.data).dt.year)
     df_new = df_new.drop(columns=['data'])
     df_new = df_new.rename(columns={36:'RS',35:'PPT',34:'P',33:'HR',32:'T',31:'DV10',30:'VV10'})
-    return df_new      
+    return df_new     
 
   
-def transform_meteocat_station_data(tosave,path,nom,nid):
+def transform_meteocat_station_data(tosave,path,nom,nid,tz=False):
     
     YEARS=[2019,2020,2021,2022,2023]
     MONTHS = {2019:range(3,13),2020:range(1,13), 2021:range(1,13), 2022:range(1,13),2023:range(1,4)}
 
-    df = pd.concat([ transform_meteocat_month_data(pd.read_csv(f'{path}{nom}_{nid}/{year}/{year}_{month:02d}_MeteoBCN{nom}_{nid}.csv'),nid) \
+    df = pd.concat([ transform_meteocat_month_data(pd.read_csv(f'{path}{nom}_{nid}/{year}/{year}_{month:02d}_MeteoBCN{nom}_{nid}.csv'),nid,tz) \
         for year in tqdm(YEARS) for month in tqdm(MONTHS[year],leave=False) ])        
     if tosave :
         df.to_csv(f'{path}/All_MeteoBCN{nom}_{nid}.csv',index=False)
     return df
   
 def load_meteocat_stations_data(path='./data_meteo/'):
-    return pd.concat([read.csv(f'{path}/All_MeteoBCN{nom}_{nid}.csv') for i in range (0,estacions_meteo_BCN.shape[0])])
+    """
+    Function that returns the processed historic meteocat data of each Barcelona station (Raval, Zona Universitària, 
+    Tibidabo) and concatenates it into a unique file 
+    """
+    return pd.concat([pd.read_csv(f'{path}/All_MeteoBCN{estacions_meteo_BCN.iloc[i,1]}_{estacions_meteo_BCN.iloc[i,0]}.csv') \
+                      for i in range(0,estacions_meteo_BCN.shape[0])])
+
+def load_meteocat_data(path='./data_meteo/'):
+    """
+    Function that returns the processed historic meteocat data of Barcelona calculated as an average of the data
+    gathered for the three stations considered: Raval, Zona Universitària, Tibidabo
+    """
+    return pd.read_csv(f'{path}/All_MeteoBCN.csv')
 
         
-def AssignWeatherStation(dfestacions):
+def AddWeatherStationToBicingInfo(dfestacions):
     """
     Function that calculates and assigns the closest barcelona weather station to each bike station
     This information is returned as a new column in dfestacions
@@ -112,13 +128,41 @@ def AssignWeatherStation(dfestacions):
     locations = dist.argmin(1)
     dfestacions['wstation_id']=locations #els index estacions_meteo:BCN
     #reemplacem [0,1,...] per ['X4,'X8',..]
-    info_estacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
-    return df
-    
+    dfestacions['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
     return dfestacions
 
+def AssignWeatherStation(dfbicing):
+    """
+    Function that add weather station identifier to bicing dataframe 
+    """
+    dfestacions=pd.read_csv(f'./data_bicing/Informacio_Estacions_Bicing.csv')
+    dfbicing = dfbicing.merge(dfestacions[['station_id','wstation_id']])
+    return dfbicing
+
+def AssignWeatherStation_global_df(dfglobal):
+    """
+    Function that calculates and assigns the closest barcelona weather station to each bike station
+    This information is returned as a new column in global_df
+    """
+    meteo_loc = estacions_meteo_BCN[['lon', 'lat']].values
+    bicing_loc = dfglobal[['station_id','lon', 'lat']].values.drop_duplicates()
+    dist = distance_matrix(bicing_loc[['lon','lat']].values, meteo_loc)
+    locations = dist.argmin(1)
+    bicing_loc['wstation_id']=locations #els index estacions_meteo:BCN
+    #reemplacem [0,1,...] per ['X4,'X8',..]
+    bicing_loc['wstation_id'].replace(estacions_meteo_BCN.index.values,estacions_meteo_BCN['wstation_id'],inplace=True)
+    dfglobal = dfglobal.merge(bicing_loc, on=['station_id','lon','lat'], how='left')
+    return dfglobal
+
+def AssignWeatherVariablesByStation(dfbicing,dfmeteovar):
+  
+    dfbicing = dfbicing.merge(dfmeteovar, on=['year','month','day','hour','wstation_id'],how='left')
+    dfbicing.drop(columns=['wstation_id'],inplace=True)
+    return dfbicing
+
 def AssignWeatherVariables(dfbicing,dfmeteovar):
-    dfbicing = dfbicing.merge(dfmeteovar, left_on=['year','month','day','hour','wstation_id'],right_on=['year','month','day','hour','wstation_id'])
+    
+    dfbicing = dfbicing.merge(dfmeteovar, on=['year','month','day','hour'],how='left')
     return dfbicing
   
   
@@ -133,6 +177,12 @@ def main():
     for i in range (0,estacions_meteo_BCN.shape[0]):
         transform_meteocat_station_data(True, METEOPATH, estacions_meteo_BCN.iloc[i,1],estacions_meteo_BCN.iloc[i,0])
     meteoDF = load_meteocat_stations_data(METEOPATH)
+    #Transformem la info de cada estació canviant la data segons time zone local, concatenant sense salvar fitxers per estació,
+    #després agrupant per dates i calculant la mitjana, i retornem un dataframe global que no té estacions meteorològiques
+    alldf = pd.concat([transform_meteocat_station_data(False, METEOPATH ,estacions_meteo_BCN.iloc[i,1], \
+                    estacions_meteo_BCN.iloc[i,0],True) for i in range (0,estacions_meteo_BCN.shape[0])])
+    alldf = alldf.groupby(['year','month','day','hour'],as_index=False).mean(numeric_only=True)
+    alldf.to_csv(METEOPATH+'All_MeteoBCN_Test.csv',index=False)
                         
                    
 if __name__=='__main__':

@@ -1,8 +1,10 @@
 import pandas as pd
 from logger import get_handler
-from MeteoBCN import AssignWeatherStation
+#from MeteoBCN import AssignWeatherStation_global_df
+#from MeteoBCN import AssignWeatherStation
 from MeteoBCN import AssignWeatherVariables
-from MeteoBCN import load_meteocat_stations_data
+from MeteoBCN import load_meteocat_data
+from DataLoad import restore_stations_loc_info
 from transportsBCN import PublicTransports
 from beachesBCN import DistToBeach
 
@@ -17,23 +19,41 @@ logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
 logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
 class Weather(BaseEstimator, TransformerMixin):
-    def __init__(self):
-        self.meteoDF = load_meteocat_stations_data()
+    def __init__(self,meteoDF=pd.DataFrame()):
+        self.meteoDF = load_meteocat_data()
         
     def fit(self, X, y=None):
         return self  # nothing else to do
     
     def transform(self, X:pd.DataFrame):
         try:
-            X = AssignWeatherStation(X)
+            #X = AssignWeatherStation_global_df(X)
+            #X = AssignWeatherStation(X)
             X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
             logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('GroupAndAverage -> Completed!')        
+            logger.debug('Add wheather features -> Completed!')        
         return X
 
+class InfoBicing(BaseEstimator, TransformerMixin):
+    def __init__(self,infoDF=pd.DataFrame()):
+        self.infoDF = restore_stations_loc_info()
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame, predict=False):
+        try:
+            X = X.merge(self.infoDF[['station_id','capacity','altitude','n_transp_500m','min_dist_to_beach']],on=['station_id'],how='left')              
+        except Exception as e:
+            logger.debug(f'Error including stations info features to df, exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('Add stations info features -> Completed!')        
+        return X
+    
 class Transports(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
@@ -89,13 +109,13 @@ def add_features_data_pipeline()->Pipeline:
 
     # Instantiacte transformers
     
-    # weather_feature = Weather()
+    weather_feature = Weather()
     public_transport = Transports()
     dist_to_beach = Beaches()
 
     # Instantiate pipeline
     pipeline = Pipeline([
-        # ('Weather',weather_feature),
+        ('Weather',weather_feature),
         ('Transports', public_transport),
         ('Beach', dist_to_beach)
     ])
