@@ -66,7 +66,24 @@ class Beaches(BaseEstimator, TransformerMixin):
             raise e
         else:
             logger.debug('add distance to nearest beach -> Completed!')        
-        return X    
+        return X
+
+class Weekend(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+        
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+    
+    def transform(self, X:pd.DataFrame):
+        try:
+            X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dayofweek in range(5,6) else 1)
+        except Exception as e:
+            logger.debug(f'Error segregating weekends, exception missage\n{str(e)}')
+            raise e
+        else:
+            logger.debug('Weekend segregation -> Completed!')        
+        return X 
 
 def add_features_data_pipeline()->Pipeline:
 

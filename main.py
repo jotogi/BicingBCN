@@ -139,6 +139,8 @@ def main():
     logger.debug(Features_df.columns)
     strat_train_set, strat_validation_set = split_data(Features_df, COLUMNS_TO_STRATIFY)
     logger.debug(strat_train_set.columns)
+
+    return strat_train_set, strat_validation_set
     
 if __name__ == '__main__':
-    main()
+    strat_train_set, strat_validation_set = main()

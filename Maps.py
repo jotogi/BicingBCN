@@ -1,62 +1,101 @@
 from dash import Dash, dcc, html, Input, Output
-from jupyter_dash import JupyterDash
-import dash
+# import dash_bootstrap_components as dbc
+# from jupyter_dash import JupyterDash
+from datetime import date
+# import dash
 import plotly.express as px
 import pandas as pd
 
-# from DataClean import reduce_dataset
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+STATIONS_INFO_CLEANED_PATH = './Data/STATIONS_CLEANED/'
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+df_to_read = pd.read_csv(STATIONS_INFO_CLEANED_PATH+'global_df.csv', decimal='.')
 
-df_to_read = pd.read_csv('./Data/INFO/2023_01_Gener_BicingNou_INFORMACIO.csv', decimal='.')
-
-df_length=df_to_read.shape[0]
-df_to_map = df_to_read.iloc[0:df_length:20]
-
-app = JupyterDash(__name__, external_stylesheets=external_stylesheets)
+# app = JupyterDash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(name=__name__)
 
 app.layout = html.Div([
     html.H4('Barcelona bike stations'),
-    dcc.Graph(id="graph",
-              style={'width': '69%',
-                    'display': 'inline-block',}
-                    ),
 
-    html.Div([
-        html.H6("\nSelect bike capacity:\n"),
-        dcc.RangeSlider(0, 54, 7, value=[0, 54], id='my-range-slider-capacity'),
-        # html.P('\n\n\n'),
+    html.Div(
+        [
+            dcc.Graph(id="graph", className = "graph-class"),
         ],
-            style={
-            'display': 'inline-block',
-            'float': 'right',
-            'width': '29%',
-#             'padding': '0px 20px 20px 20px',
-        })
+        className = 'left-div-class'
+    ),
+    
+    html.Div(
+        [
+            html.Div(
+                [
+                    html.Label("Select Date:"),
+                    dcc.DatePickerSingle(
+                        id='date-picker-single',
+                        min_date_allowed=date(2019, 3, 1),
+                        max_date_allowed=date(2022, 12, 31),
+                        initial_visible_month=date(2021, 6, 1),
+                        date=date(2021, 6, 1))
+                ],
+                className='label-box-pair'
+            ),
+            
+            html.Div(
+                [
+                    html.Label("Select Station:"),
+                    dcc.Dropdown(options=list(range(1,519)),
+                                 value=1,
+                                 id='station-selection',
+                                 className='dropdown-class')
+                ],
+                className='label-box-pair'
+            ),
+
+            html.Div(
+                [
+                    html.Label("Select hour:"),
+                    dcc.Dropdown(options=list(range(24)),
+                                 value=0,
+                                 id='time-selection',
+                                 className='dropdown-class'),                    
+                ],
+                className='label-box-pair'
+            )
+        ],
+        className='right-div-class'
+    )
 ])
 
 
 @app.callback(
     Output("graph", "figure"),
-    Input('my-range-slider-capacity', 'value')
+    Input('date-picker-single', 'date'),
+    Input('station-selection', 'value'),
+    Input('time-selection', 'value'),
     )
-def display_choropleth(value_capacity):
-    pandas_filter = ((df_to_map['capacity']<=value_capacity[1]) &
-                     (df_to_map['capacity']>=value_capacity[0]))
+def display_choropleth(date_value,station_value, hour_value):
+    year, month, day = date_value.split('-')
 
-    fig = px.density_mapbox(df_to_map[pandas_filter],
-    # fig = px.density_mapbox(df_to_map,
-                            lat='lat', lon='lon', z='capacity',#z='altitude',
+    pandas_filter = ((df_to_read['year']==int(year)) &
+                     (df_to_read['month']==int(month)) &
+                    #  (df_to_read['station_id']==int(station_value)) &
+                     (df_to_read['day']==int(day)) &
+                     (df_to_read['hour']==hour_value))
+    
+
+    fig = px.density_mapbox(df_to_read[pandas_filter],
+                            lat='lat', lon='lon', z='percentage_docks_available',
+                            # name = 'Available Docks',
                             radius=5,
                             center=dict(lat=41.40, lon=2.17),
                             zoom=12,
-                            # mapbox_style="stamen-terrain"
+                            opacity=0.5,
                             mapbox_style='open-street-map',
-                            # width = 1000,
                             height = 1000
                             )
-    # fig.update_geos(fitbounds="locations", visible=False)
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
     return fig
 
-app.run_server(mode="external", debug=True, use_reloader=False)
+# app.run_server(mode="external", debug=True, use_reloader=False)
+
+if __name__ == '__main__':
+    app.run_server(debug=True)

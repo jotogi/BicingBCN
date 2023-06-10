@@ -1,0 +1,13 @@
+body {
+    font-family: sans-serif;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: rgb(9, 8, 64);
+    font-size: 30px;
+    text-align: center;
+}
+label {
+    color:rgb(127, 155, 255);
+    font-size:30px;
+    /* float: left; */
+}

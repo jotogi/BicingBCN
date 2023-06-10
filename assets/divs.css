@@ -1,0 +1,18 @@
+.left-div-class {
+    display: inline-block;
+    width: 69%;
+}
+
+.right-div-class {
+    float: right;
+    width: 29%;
+}
+
+.dropdown-class{
+    /* float: right; */
+    width: 28%;
+}
+
+.label-box-pair{
+    display:flex
+}
