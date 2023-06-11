@@ -1,21 +1,15 @@
 import pandas as pd
 from logger import get_handler
-from DataClean import clean_data_pipeline
-
-# sklearns imports
-import sklearn
+from DataFilesManager import read_yaml, get_all_files_under_path_sorted
 from sklearn import set_config
 from sklearn.base import BaseEstimator, TransformerMixin # To create full custom transformers
 from sklearn.pipeline import Pipeline
-# from sklearn import preprocessing
-# from sklearn.preprocessing import StandardScaler
-# from sklearn.preprocessing import FunctionTransformer
-# from sklearn.compose import ColumnTransformer
-# from sklearn.pipeline import FeatureUnion
 
-LOGGER_FILE = 'missages_datareestrucuture.log'
-logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
-logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
+# to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
+set_config(transform_output="pandas")
+logger = get_handler()
+parameters = read_yaml('./parameters.yml')
+
 
 class GroupAndAverage(BaseEstimator, TransformerMixin):
     def __init__(self):
@@ -91,31 +85,37 @@ def transform_data_pipeline()->Pipeline:
 
     return pipeline
 
+def get_reestructured_data_df_from_df(df:pd.DataFrame)->pd.DataFrame:
+    try:
+        # Transform df to a reduced df with the target columns
+        transformed_pipeline = transform_data_pipeline()
+        logger.debug(f'Start fit_transform')
+        transformed_df =transformed_pipeline.fit_transform(df)
 
-def main():
-    df = pd.read_csv('./Data/STATIONS/2021_04_Abril_BicingNou_ESTACIONS.csv')
+    except Exception as e:
+                logger.debug(f'Error reestructuring dataframe,\nexception missage:\n{str(e)}')
+                raise e
+    else:
+        logger.debug('Data reestructuration -> Completed!')
 
-    # to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
-    set_config(transform_output="pandas")
+    return transformed_df
 
+def reestructure_data_sequence()->pd.DataFrame:
+    # get all the pre-cleaned/processed
+    # get dataframes from files
+    # apply reestructure pipeline
+    # save the resulting dataframe
+    # concatenate all the dataframes
+    # save the final concatenated df
 
-    logger.debug(f'Initial shape: {df.shape}')
-    logger.debug(f'Initial columns: {df.columns}')
+    cleaned_files = [file for file in get_all_files_under_path_sorted(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']) if 'PRE_' in file]
+    all_reestructured_df = []
+    for file in cleaned_files:
+        df = pd.read_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+file)
+        reestructured_df = get_reestructured_data_df_from_df(df)
+        reestructured_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'CLEANED__'+file.split('PRE_')[1])
+        all_reestructured_df.append(reestructured_df)
 
-    columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
-                         'is_installed','is_renting','is_returning', 'status']    
-    clean_pipline = clean_data_pipeline(columns_to_delete)   
-    clean_df =clean_pipline.fit_transform(df)
-
-
-    transformed_pipline = transform_data_pipeline()
-    logger.debug(f'Start fit_transform')
-    transformed_df =transformed_pipline.fit_transform(clean_df)
-
-    logger.debug(f'Final shape: {transformed_df.shape}')
-    logger.debug(f'Final columns: {transformed_df.columns}')
-
-
-
-if __name__ == '__main__':
-    main()
+    globlal_df = pd.concat(all_reestructured_df, axis=0)
+    globlal_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'global_df.csv')
+    return globlal_df

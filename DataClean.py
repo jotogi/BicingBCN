@@ -1,25 +1,17 @@
 import pandas as pd
 from logger import get_handler
-from DataFilesManager import get_stations_df
+from DataFilesManager import read_yaml, get_all_files_under_path_sorted, create_folder, get_stations_df
 from typing import List
-import random
-import numpy as np
-# import os
-
-# sklearns imports
-import sklearn
 from sklearn.base import BaseEstimator, TransformerMixin # To create full custom transformers
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn import set_config
-# from sklearn import preprocessing
-# from sklearn.preprocessing import StandardScaler
-# from sklearn.preprocessing import FunctionTransformer
-# from sklearn.pipeline import FeatureUnion
 
-LOGGER_FILE = 'missages_dataclean.log'
-logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
-logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
+# to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
+set_config(transform_output="pandas")
+
+logger = get_handler()
+parameters = read_yaml('./parameters.yml')
 
 class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
     def __init__(self, available_stations:List):
@@ -90,7 +82,8 @@ class TransformToTimestamp(BaseEstimator, TransformerMixin):
             X['month'] = X['last_updated'].dt.month
             X['day'] = X['last_updated'].dt.day
             X['hour'] = X['last_updated'].dt.hour
-            X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dayofweek in range(5,6) else 1)
+            X['minute'] = X['last_updated'].dt.minute
+            X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dayofweek in range(5,7) else 1)
         except Exception as e:
             logger.debug(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
             raise e
@@ -124,9 +117,6 @@ class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
     
     def transform(self, X:pd.DataFrame):
         try:
-            # X['calculated_capacity']=X['num_bikes_available']+X['num_docks_available']
-            # X['max_capacity']=X[['capacity','calculated_capacity']].max(axis=1)            
-            # X['percentage_docks_available'] = X['num_docks_available']/(X['max_capacity'])
             X['percentage_docks_available'] = X['num_docks_available']/(X['num_bikes_available']+X['num_docks_available'])
         except Exception as e:
             logger.debug(f'Error obtaining relative occupacy, exception missage\n{str(e)}')
@@ -168,41 +158,53 @@ def clean_data_pipeline(columns_to_keep:List,
 
     return pipeline
 
+def get_cleaned_data_df_from_df(df:pd.DataFrame,                                   
+                                valid_stations:List,
+                                stations_info_df:pd.DataFrame)->pd.DataFrame:
+    '''
+    Get original file 'file' from 'origin_path' and pass all the defined pipelines,
+    returning the cleaned df.
+    '''
+    try:
+        # Clean df from bad data
+        clean_pipeline = clean_data_pipeline(columns_to_keep=parameters['COLUMNS']['COLUMNS_TO_KEEP'],
+                                             valid_stations_id=valid_stations,
+                                             stations_info=stations_info_df)
+        clean_df =clean_pipeline.fit_transform(df)
 
-def main():
-    df = pd.read_csv('./Data/STATIONS/2021_04_Abril_BicingNou_ESTACIONS.csv')
-    STATION_INFO_PATH = './Data/INFO/'
-    FILENAME = 'Informacio_Estacions_Bicing.json'
-    columns_to_get = ['station_id','lat','lon','capacity']
-    stations_info_df = get_stations_df(STATION_INFO_PATH+FILENAME,columns_to_get)
+    except Exception as e:
+                logger.debug(f'Error cleaning dataframe,\nexception missage:\n{str(e)}')
+                raise e
+    else:
+        logger.debug('Data cleaning -> Completed!')
 
-    # to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
-    set_config(transform_output="pandas")
-    
-    valid_stations = random.sample(df['station_id'].unique().tolist(),200)
-    logger.debug(f'Valid stations: {valid_stations}')
-    logger.debug(f'Valid stations length: {len(valid_stations)}')
+    return clean_df
 
-    logger.debug(f'Initial shape: {df.shape}')
-    logger.debug(f'Initial columns: {df.columns}')
+def remove_data_from_other_month(df:pd.DataFrame, month:int)->None:
+    index_to_drop = df[df['month']!=month].index
+    df.drop(labels=index_to_drop, axis=0, inplace=True)
+    return df
 
-    # columns_to_delete = ['last_reported', 'is_charging_station', 'ttl',
-    #                      'is_installed','is_renting','is_returning', 'status']    
-    columns_to_keep = ['station_id','last_updated','num_bikes_available','num_docks_available']
+def clean_data_sequence()->None:
+    # get dirty files (originals from web {year}_{month}_{month_name}_%Bicing%_INFORMACIO.csv)
+    # get stations dataframe.
+    # get list of valid stations.
+    # create folder to save results if doesn't exists.
+    # convert files in dataframes.
+    # clean dataframes
+    # remove data from other months
+    # save dataframe to csv.
 
-    clean_pipline = clean_data_pipeline(columns_to_keep=columns_to_keep,
-                                        valid_stations_id=valid_stations,
-                                        stations_info=stations_info_df)
-
-    logger.debug(f'Start fit_transform')
-
-    clean_df =clean_pipline.fit_transform(df)
-
-    logger.debug(f'Final stations: {np.unique(clean_df.station_id)}')
-    logger.debug(f'Final shape: {clean_df.shape}')
-    logger.debug(f'Final columns: {clean_df.columns}')
+    dirty_files = [file for file in get_all_files_under_path_sorted(parameters['FILE_STRUCTURE']['STATIONS_INFO_PATH']) if file.split('.')[1] == 'csv']
+    stations_info_df = get_stations_df(parameters['FILE_STRUCTURE']['INFO']+parameters['FILE_STRUCTURE']['ESTATIONS_FILENAME'],
+                                       parameters['COLUMNS']['COLUMNS_TO_GET_FROM_INFO'])
+    valid_stations = stations_info_df['station_id'].unique().tolist()
+    create_folder(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH'])
 
 
-
-if __name__ == '__main__':
-    main()
+    for file in dirty_files:
+        month = int(file.split('_')[1])
+        df = pd.read_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_PATH']+file)
+        clean_df = get_cleaned_data_df_from_df(df, valid_stations, stations_info_df)
+        clean_df = remove_data_from_other_month(clean_df,month)
+        clean_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'PRE_'+file)

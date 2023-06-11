@@ -1,0 +1,15 @@
+# -Data
+#   -INFO
+#     -Informacio_Estacions_Bicing.json
+#   -STATIONS
+#   -STATIONS_CLEANED
+
+FILE_STRUCTURE:
+  INFO: './Data/INFO/'
+  STATIONS_INFO_PATH: './Data/STATIONS/'
+  STATIONS_INFO_CLEANED_PATH: './Data/STATIONS_CLEANED/'
+  ESTATIONS_FILENAME: 'Informacio_Estacions_Bicing.json'
+COLUMNS:
+  COLUMNS_TO_GET_FROM_INFO: ['station_id','lat','lon','capacity','altitude']
+  COLUMNS_TO_KEEP: ['station_id','last_updated','num_bikes_available','num_docks_available']
+  COLUMNS_TO_STRATIFY: ['year' ,'month' ,'day' ,'hour'] # incloent station_id no funciona
