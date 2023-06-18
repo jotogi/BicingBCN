@@ -8,11 +8,23 @@
     width: 29%;
 }
 
-.dropdown-class{
-    /* float: right; */
+/* .dropdown-class{
+    float: right;
     width: 28%;
 }
 
 .label-box-pair{
     display:flex
+} */
+
+.label-box-pair { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    grid-gap: 20px; 
+    /* border: 1px solid black;  */
+    width: 80%; 
+} 
+.dropdown-class { 
+    margin: 10px; 
+    /* border: 1px solid red;  */
 }

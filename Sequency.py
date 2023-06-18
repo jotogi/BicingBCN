@@ -10,6 +10,7 @@ parameters = read_yaml('./parameters.yml')
 
 def sequence(generate_cleaned_files:bool=False, #True if you want to generate all the PRE_ files again.
              generate_global_df:bool=False, #True if you want to generate all the CLEAN__ files again.
+             generate_train_and_test_sets:bool=False, #True if you want to generate all train and test files again. 
              )-> pd.DataFrame:
 
     # Generate files PRE_ Only DataClean has been applied. The pipeline is:
@@ -31,6 +32,7 @@ def sequence(generate_cleaned_files:bool=False, #True if you want to generate al
     # Generate the global_df dataframe and save it on a file (global_df.csv)
     if generate_global_df:
         global_df = reestructure_data_sequence()
+        global_df.reset_index(inplace=True)
     else:
         global_df =  pd.read_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'global_df.csv')
 
@@ -39,12 +41,17 @@ def sequence(generate_cleaned_files:bool=False, #True if you want to generate al
     # ('Weather',weather_feature),
     # ('Transports', public_transport),
     # ('Beach', dist_to_beach)
-    features_df = run_pipeline(global_df)
-    features_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'features_df.csv')
-    
-    # Separate the train set and the validation set stratified by 'COLUMNS_TO_STRATIFY'
-    strat_train_set, strat_validation_set = split_data(features_df, parameters['COLUMNS']['COLUMNS_TO_STRATIFY'])
-    strat_train_set.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'train_set.csv')
-    strat_validation_set.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'validation_set.csv')
+    if generate_train_and_test_sets:
+        features_df = run_pipeline(global_df)
+        features_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'features_df.csv',index=False)
+        
+        # Separate the train set and the validation set stratified by 'COLUMNS_TO_STRATIFY'
+        strat_train_set, strat_validation_set = split_data(features_df, parameters['COLUMNS']['COLUMNS_TO_STRATIFY'])
+        strat_train_set.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'train_set.csv',index=False)
+        strat_validation_set.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'validation_set.csv',index=False)
+    else:
+        strat_train_set = pd.read_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'train_set.csv')
+        strat_validation_set = pd.read_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'validation_set.csv')
+ 
 
     return strat_train_set, strat_validation_set

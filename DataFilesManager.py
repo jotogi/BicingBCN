@@ -47,6 +47,7 @@ def main():
 
 
 if __name__=='__main__':
-    main()
-    create_folder()
-    current_path = os.system('pwd')
+    parameters = read_yaml('./parameters.yml')
+    stations_info_df = get_stations_df(parameters['FILE_STRUCTURE']['INFO']+parameters['FILE_STRUCTURE']['ESTATIONS_FILENAME'],
+                                       parameters['COLUMNS']['COLUMNS_TO_GET_FROM_INFO'])
+    print(stations_info_df.columns)

@@ -207,4 +207,4 @@ def clean_data_sequence()->None:
         df = pd.read_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_PATH']+file)
         clean_df = get_cleaned_data_df_from_df(df, valid_stations, stations_info_df)
         clean_df = remove_data_from_other_month(clean_df,month)
-        clean_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'PRE_'+file)
+        clean_df.to_csv(parameters['FILE_STRUCTURE']['STATIONS_INFO_CLEANED_PATH']+'PRE_'+file, index=False)

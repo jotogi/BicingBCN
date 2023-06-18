@@ -114,7 +114,7 @@ def load_meteocat_data(path='./data_meteo/'):
     Function that returns the processed historic meteocat data of Barcelona calculated as an average of the data
     gathered for the three stations considered: Raval, Zona Universitària, Tibidabo
     """
-    return pd.read_csv(f'{path}/All_MeteoBCN.csv')
+    return pd.read_csv(f'{path}All_MeteoBCN.csv')
 
         
 def AddWeatherStationToBicingInfo(dfestacions):

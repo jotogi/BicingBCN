@@ -1,10 +1,7 @@
 import pandas as pd
 from logger import get_handler
-#from MeteoBCN import AssignWeatherStation_global_df
-#from MeteoBCN import AssignWeatherStation
-from MeteoBCN import AssignWeatherVariables
-from MeteoBCN import load_meteocat_data
-from DataLoad import restore_stations_loc_info
+from DataLoad import load_holidaysBCN
+from MeteoBCN import AssignWeatherVariables, load_meteocat_data
 from transportsBCN import PublicTransports
 from beachesBCN import DistToBeach
 
@@ -13,22 +10,30 @@ import sklearn
 from sklearn import set_config
 from sklearn.base import BaseEstimator, TransformerMixin # To create full custom transformers
 from sklearn.pipeline import Pipeline
+from DataFilesManager import read_yaml
+
 
 LOGGER_FILE = 'missages_datareestrucuture.log'
 logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
 logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
+parameters = read_yaml('./parameters.yml')
+
+
 class Weather(BaseEstimator, TransformerMixin):
-    def __init__(self,meteoDF=pd.DataFrame()):
-        self.meteoDF = load_meteocat_data()
+    # RS-> Radiació solar
+    # PPT-> precipitació
+    # VV10-> velocitat vent 10 m
+    # HR-> Humitat relativa
+    # T-> temperatura
+    def __init__(self):
+        self.meteoDF = load_meteocat_data(parameters['FILE_STRUCTURE']['DATA_METEO'])
         
     def fit(self, X, y=None):
         return self  # nothing else to do
     
     def transform(self, X:pd.DataFrame):
         try:
-            #X = AssignWeatherStation_global_df(X)
-            #X = AssignWeatherStation(X)
             X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
             logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
@@ -37,23 +42,25 @@ class Weather(BaseEstimator, TransformerMixin):
             logger.debug('Add wheather features -> Completed!')        
         return X
 
-# class InfoBicing(BaseEstimator, TransformerMixin):
-#     def __init__(self,infoDF=pd.DataFrame()):
-#         self.infoDF = restore_stations_loc_info()
-        
-#     def fit(self, X, y=None):
-#         return self  # nothing else to do
+class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        self.festes = load_holidaysBCN()
+    def fit(self, X, y=None):
+        return self  # nothing else to do
     
-#     def transform(self, X:pd.DataFrame, predict=False):
-#         try:
-#             X = X.merge(self.infoDF[['station_id','capacity','altitude','n_transp_500m','min_dist_to_beach']],on=['station_id'],how='left')              
-#         except Exception as e:
-#             logger.debug(f'Error including stations info features to df, exception missage\n{str(e)}')
-#             raise e
-#         else:
-#             logger.debug('Add stations info features -> Completed!')        
-#         return X
-    
+    def transform(self, X:pd.DataFrame):
+        # X['weekend']= pd.to_datetime(X[['year','month','day']]).dt.weekday > 4
+        # X['peekhour'] = X.apply(lambda x: 1 if ((x['hour'] in range(8,10)) | (x['hour'] in range(17,19)) ) else 0,axis=1)
+        # X['peekhour'] = X['hour'].apply(lambda x: 1 if ((x in range(8,10)) | (x in range(17,19)) ) else 0)
+        X['peekhour'] = X.apply(lambda x: 1 if ((x['hour'] in range(8,10)) | (x['hour'] in range(17,19)) |  (x['weekend']==0)) else 0, axis=1)
+        # i ara fem producte dfclean22['peekhour'] * dfclean22['workday'] pq només aplica si és laborable
+        # X['peekhour']= X.peekhour*(~X.weekend)
+        # ara que ja hem actualitzat peekhour, podem convertir weekend -booleà- a integer
+        # X.weekend = X.weekend.replace({True: 1, False: 0})
+        X['holiday']= pd.to_datetime(X[['day','month','year']]).isin(self.festes)
+        X.holiday = X.holiday.replace({True: 1, False: 0})
+        return X
+
 class Transports(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
@@ -92,13 +99,15 @@ def add_features_data_pipeline()->Pipeline:
 
     # Instantiacte transformers
     
-    # weather_feature = Weather()
+    weather_feature = Weather()
+    peek_hour_and_hollydays=CombinedAttributesAdder()
     public_transport = Transports()
     dist_to_beach = Beaches()
 
     # Instantiate pipeline
     pipeline = Pipeline([
-        # ('Weather',weather_feature),
+        ('Weather',weather_feature),
+        ('peek_hour_and_hollydays',peek_hour_and_hollydays),
         ('Transports', public_transport),
         ('Beach', dist_to_beach)
     ])
@@ -116,8 +125,8 @@ def main():
     set_config(transform_output="pandas")
     global_df = pd.read_csv('./Data/STATIONS_CLEANED/global_df.csv')
     Features_df = run_pipeline(global_df)
-    logger.debug(type(Features_df))
-    logger.debug(Features_df.columns)
+    # logger.debug(type(Features_df))
+    # logger.debug(Features_df.columns)
     Features_df.to_csv('./Data/STATIONS_CLEANED/global_df_features.csv', index=False)
     print(Features_df.head())
     print(Features_df.info())
