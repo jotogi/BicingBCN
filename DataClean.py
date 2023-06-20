@@ -10,7 +10,7 @@ from sklearn import set_config
 # to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
 set_config(transform_output="pandas")
 
-logger = get_handler()
+logger_data_clean = get_handler()
 parameters = read_yaml('./parameters.yml')
 
 class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
@@ -38,16 +38,16 @@ class DeleteNotAvailableStationsRows(BaseEstimator, TransformerMixin):
                          (~(X['station_id'].isin(self.available_stations))))   
 
             df_index_to_filter = X[df_filter].index
-            logger.debug(f'Index to delete: {len(df_index_to_filter)}')
+            logger_data_clean.debug(f'Index to delete: {len(df_index_to_filter)}')
             X.drop(index=df_index_to_filter,
                 #    axis = 1,
                    inplace = True,
                    errors = 'ignore')
         except Exception as e:
-            logger.debug(f'Error cleaning the rows for NAS, exception missage\n{str(e)}')
+            logger_data_clean.debug(f'Error cleaning the rows for NAS, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('DeleteNotAvailableStationsRows -> Completed!')
+            logger_data_clean.debug('DeleteNotAvailableStationsRows -> Completed!')
         return X
 
 class DeleteNaNInRows(BaseEstimator, TransformerMixin):
@@ -62,10 +62,10 @@ class DeleteNaNInRows(BaseEstimator, TransformerMixin):
             # X[~np.isnan(X).any(axis=1)]
             X.dropna(axis=1)
         except Exception as e:
-            logger.debug(f'Error cleaning the rows for NaN, exception missage\n{str(e)}')
+            logger_data_clean.debug(f'Error cleaning the rows for NaN, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('DeleteNaNInRows -> Completed!')
+            logger_data_clean.debug('DeleteNaNInRows -> Completed!')
         return X
 
 class TransformToTimestamp(BaseEstimator, TransformerMixin):
@@ -85,10 +85,10 @@ class TransformToTimestamp(BaseEstimator, TransformerMixin):
             X['minute'] = X['last_updated'].dt.minute
             X['weekend'] = X['last_updated'].apply(lambda x: 0 if x.dayofweek in range(5,7) else 1)
         except Exception as e:
-            logger.debug(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
+            logger_data_clean.debug(f'Error casting Timestamp the rows for NaN, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('TransformToTimestamp -> Completed!')        
+            logger_data_clean.debug('TransformToTimestamp -> Completed!')        
         return X
 
 class MergeStationsWithInfo(BaseEstimator, TransformerMixin):
@@ -102,10 +102,10 @@ class MergeStationsWithInfo(BaseEstimator, TransformerMixin):
         try:
             X = X.merge(right=self.info, on='station_id')
         except Exception as e:
-            logger.debug(f'Error merging stations with info, exception missage\n{str(e)}')
+            logger_data_clean.debug(f'Error merging stations with info, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('MergeStationsWithInfo -> Completed!')        
+            logger_data_clean.debug('MergeStationsWithInfo -> Completed!')        
         return X
 
 class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
@@ -119,10 +119,10 @@ class CreateRelativeOccupacyColumn(BaseEstimator, TransformerMixin):
         try:
             X['percentage_docks_available'] = X['num_docks_available']/(X['num_bikes_available']+X['num_docks_available'])
         except Exception as e:
-            logger.debug(f'Error obtaining relative occupacy, exception missage\n{str(e)}')
+            logger_data_clean.debug(f'Error obtaining relative occupacy, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('CreateRelativeOccupacyColumn -> Completed!')        
+            logger_data_clean.debug('CreateRelativeOccupacyColumn -> Completed!')        
         return X
 
 def clean_data_pipeline(columns_to_keep:List,
@@ -173,10 +173,10 @@ def get_cleaned_data_df_from_df(df:pd.DataFrame,
         clean_df =clean_pipeline.fit_transform(df)
 
     except Exception as e:
-                logger.debug(f'Error cleaning dataframe,\nexception missage:\n{str(e)}')
+                logger_data_clean.debug(f'Error cleaning dataframe,\nexception missage:\n{str(e)}')
                 raise e
     else:
-        logger.debug('Data cleaning -> Completed!')
+        logger_data_clean.debug('Data cleaning -> Completed!')
 
     return clean_df
 

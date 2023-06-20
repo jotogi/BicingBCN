@@ -1,6 +1,12 @@
 from pyproj import Proj
+from logger import get_handler
 import requests
 import json
+from DataFilesManager import read_yaml, get_stations_df
+import time
+
+logger_geo_bcn = get_handler()
+parameters = read_yaml('./parameters.yml')
 
 def get_UTM_from_lon_and_lat(lon:float, lat:float):
     myProj = Proj(proj='utm',zone=31,ellps='WGS84', preserve_units=False)
@@ -29,15 +35,22 @@ def get_suburb_code_and_name_from_UTM_coordinates(UTMx:float,UTMy:float,projecti
 def get_suburb_code_and_name_from_Lat_and_Lon_coordinates(lon:float, lat:float):
     UTMx, UTMy = get_UTM_from_lon_and_lat(lon = lon, lat = lat)
     codi, nom = get_suburb_code_and_name_from_UTM_coordinates(UTMx, UTMy)
+    print(codi, nom)
+    time.sleep(3)
     return codi, nom
 
 def main():
-    # UTMx, UTMy = get_UTM_from_lon_and_lat(lon = 2.1801069, lat = 41.3979779)
-    # codi, nom = get_suburb_code_and_name_from_UTM_coordinates(UTMx, UTMy)
-
-    codi, nom = get_suburb_code_and_name_from_Lat_and_Lon_coordinates(lon = 2.1801069, lat = 41.3979779)
-
-    print(codi, nom)
+    parameters = read_yaml('./parameters.yml')
+    valid_stations = ["station_id","lat","lon","altitude", "address","post_code","capacity",
+                      "is_charging_station","nearby_distance","_ride_code_support","rental_uris"]
+    
+    stations_info_df = get_stations_df(parameters['FILE_STRUCTURE']['INFO']+parameters['FILE_STRUCTURE']['ESTATIONS_FILENAME'],
+                                       valid_stations)
+        
+    stations_info_df['codi_barri'],stations_info_df['nom_barri'] = stations_info_df.apply(lambda x: get_suburb_code_and_name_from_Lat_and_Lon_coordinates(lon = x['lon'], lat = x['lat']), axis=1, result_type='expand')
+    
+    stations_info_df.to_csv(parameters['FILE_STRUCTURE']['INFO']+'_new_'+parameters['FILE_STRUCTURE']['ESTATIONS_FILENAME'], index=False)
+    print(stations_info_df[['codi_barri','nom_barri']])
 
 if __name__ == '__main__':
     main()

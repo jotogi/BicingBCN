@@ -2,7 +2,10 @@ from dash import Dash, dcc, html, Input, Output
 import plotly.express as px
 import pandas as pd
 from datetime import date
+from logger import get_handler
+from Stations import get_df_for_dynamics
 
+logger_maps_dynamic = get_handler()
 
 app = Dash(__name__)
 
@@ -32,16 +35,18 @@ app.layout = html.Div([
                 className='label-box-pair'
             ),
             
-            # html.Div(
-            #     [
-            #         html.Label("Select hour:"),
-            #         dcc.Dropdown(options=list(range(24)),
-            #                      value=0,
-            #                      id='time-selection',
-            #                      className='dropdown-class'),                    
-            #     ],
-            #     className='label-box-pair'
-            # )
+            html.Div(
+                [
+                    html.Label("Select feature:"),
+                    dcc.Dropdown(options=['Percentage docks available',
+                                          '# of bikes leaved',
+                                          '# of bikes taken'],
+                                 value='Percentage docks available',
+                                 id='feature-selection',
+                                 className='dropdown-class')                    
+                ],
+                className='label-box-pair'
+            )
         ],
         className='right-div-class'
     )
@@ -50,28 +55,34 @@ app.layout = html.Div([
 
 @app.callback(
     Output("graph", "figure"),
-    Input('date-picker-single', 'date'),)
-    # Input('station-selection', 'value'),
-    # Input('time-selection', 'value'),)
-def display_animated_graph(date_value):
+    Input('date-picker-single', 'date'),
+    Input('feature-selection', 'value'),)
+def display_animated_graph(date_value, feature_value):
     year, month, day = date_value.split('-')
-    month_name = {
-        1:'Gener',2:'Febrer',3:'Març',4:'Abril',5:'Maig',6:'Juny',
-        7:'Juliol',8:'Agost',9:'Setembre',10:'Octubre',11:'Novembre',12:'Desembre',
-        }
-    df_to_read = pd.read_csv(f'./Data/STATIONS_CLEANED/PRE_{year}_{month}_{month_name[int(month)]}_BicingNou_ESTACIONS.csv')
-    df_to_read['Hour:Minute']=df_to_read['hour']+df_to_read['minute']/60
-    df_to_read['Hour:Minute']=df_to_read['Hour:Minute'].round(2)
-    df_to_read = df_to_read.sort_values(by=['station_id','year','month','day','hour','minute'])
+    year_, month_, day_ = int(year), int(month), int(day)
+    features = {'Percentage docks available':'percentage_docks_available',
+                '# of bikes leaved':'number_of_bikes_leaved',
+                '# of bikes taken':'number_of_bikes_taken',
+                }
+    z_feature = features[feature_value]
+    # month_name = {
+    #     1:'Gener',2:'Febrer',3:'Març',4:'Abril',5:'Maig',6:'Juny',
+    #     7:'Juliol',8:'Agost',9:'Setembre',10:'Octubre',11:'Novembre',12:'Desembre',
+    #     }
+    # df_to_read = pd.read_csv(f'./Data/STATIONS_CLEANED/PRE_{year}_{month}_{month_name[int(month)]}_BicingNou_ESTACIONS.csv')
+    # df_to_read['Hour:Minute']=df_to_read['hour']+df_to_read['minute']/60
+    # df_to_read['Hour:Minute']=df_to_read['Hour:Minute'].round(2)
+    # df_to_read = df_to_read.sort_values(by=['station_id','year','month','day','hour','minute'])
 
-    filter_df = ((df_to_read['year']==int(year)) &
-                (df_to_read['month']==int(month)) &
-                (df_to_read['day']==int(day))
+    df_to_read =  get_df_for_dynamics(year_,month_,day_)
+    filter_df = ((df_to_read['year']==year_) &
+                (df_to_read['month']==month_) &
+                (df_to_read['day']==day_)
                 )
     df_to_read = df_to_read[filter_df]
     animation = px.density_mapbox(df_to_read,
-                            lat='lat', lon='lon', z='percentage_docks_available',
-                            radius=5,
+                            lat='lat', lon='lon', z=z_feature,#z='percentage_docks_available',
+                            radius=8,
                             center=dict(lat=41.40, lon=2.17),
                             zoom=12,
                             opacity=1.0,

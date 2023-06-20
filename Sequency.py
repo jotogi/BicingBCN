@@ -5,7 +5,7 @@ from AddFeatures import run_pipeline
 from SplitData import split_data
 from logger import get_handler
 
-logger = get_handler()
+logger_sequence = get_handler()
 parameters = read_yaml('./parameters.yml')
 
 def sequence(generate_cleaned_files:bool=False, #True if you want to generate all the PRE_ files again.

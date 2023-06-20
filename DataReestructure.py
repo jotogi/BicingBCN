@@ -7,7 +7,7 @@ from sklearn.pipeline import Pipeline
 
 # to obtain a pandas df to the output of 'fit_transform' instead a numpy arrary
 set_config(transform_output="pandas")
-logger = get_handler()
+logger_data_reestructure = get_handler()
 parameters = read_yaml('./parameters.yml')
 
 
@@ -22,10 +22,10 @@ class GroupAndAverage(BaseEstimator, TransformerMixin):
         try:
             average_df = X.groupby(['station_id','year','month','day','hour']).mean(numeric_only=True)
         except Exception as e:
-            logger.debug(f'Error grouping and transforming, exception missage\n{str(e)}')
+            logger_data_reestructure.debug(f'Error grouping and transforming, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('GroupAndAverage -> Completed!')        
+            logger_data_reestructure.debug('GroupAndAverage -> Completed!')        
         return average_df
     
 class ShiftColumns(BaseEstimator, TransformerMixin):
@@ -42,10 +42,10 @@ class ShiftColumns(BaseEstimator, TransformerMixin):
             X['ctx-3'] = X['percentage_docks_available'].shift(periods=3, fill_value=0)
             X['ctx-4'] = X['percentage_docks_available'].shift(periods=4, fill_value=0)
         except Exception as e:
-            logger.debug(f'Error shifting columns (ShiftColumns), exception missage\n{str(e)}')
+            logger_data_reestructure.debug(f'Error shifting columns (ShiftColumns), exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('ShiftColumns -> Completed!')        
+            logger_data_reestructure.debug('ShiftColumns -> Completed!')        
         return X
 
 class PruneRows(BaseEstimator, TransformerMixin):
@@ -62,10 +62,10 @@ class PruneRows(BaseEstimator, TransformerMixin):
             row_increase = 5
             pruned_df = X.iloc[initial_row:df_length:row_increase]
         except Exception as e:
-            logger.debug(f'Error pruning rows (PruneRows), exception missage\n{str(e)}')
+            logger_data_reestructure.debug(f'Error pruning rows (PruneRows), exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('PruneRows -> Completed!')        
+            logger_data_reestructure.debug('PruneRows -> Completed!')        
         return pruned_df
 
 def transform_data_pipeline()->Pipeline:
@@ -89,14 +89,14 @@ def get_reestructured_data_df_from_df(df:pd.DataFrame)->pd.DataFrame:
     try:
         # Transform df to a reduced df with the target columns
         transformed_pipeline = transform_data_pipeline()
-        logger.debug(f'Start fit_transform')
+        logger_data_reestructure.debug(f'Start fit_transform')
         transformed_df =transformed_pipeline.fit_transform(df)
 
     except Exception as e:
-                logger.debug(f'Error reestructuring dataframe,\nexception missage:\n{str(e)}')
+                logger_data_reestructure.debug(f'Error reestructuring dataframe,\nexception missage:\n{str(e)}')
                 raise e
     else:
-        logger.debug('Data reestructuration -> Completed!')
+        logger_data_reestructure.debug('Data reestructuration -> Completed!')
 
     return transformed_df
 

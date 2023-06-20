@@ -14,8 +14,8 @@ from DataFilesManager import read_yaml
 
 
 LOGGER_FILE = 'missages_datareestrucuture.log'
-logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
-logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
+logger_add_features = get_handler(LOGGER_FILENAME= LOGGER_FILE)
+logger_add_features.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
 parameters = read_yaml('./parameters.yml')
 
@@ -36,10 +36,10 @@ class Weather(BaseEstimator, TransformerMixin):
         try:
             X = AssignWeatherVariables(X,self.meteoDF)
         except Exception as e:
-            logger.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
+            logger_add_features.debug(f'Error including Wheather feature to df, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('Add wheather features -> Completed!')        
+            logger_add_features.debug('Add wheather features -> Completed!')        
         return X
 
 class CombinedAttributesAdder(BaseEstimator, TransformerMixin):
@@ -72,10 +72,10 @@ class Transports(BaseEstimator, TransformerMixin):
         try:
             X = PublicTransports(X)
         except Exception as e:
-            logger.debug(f'Error including public transports feature to df, exception missage\n{str(e)}')
+            logger_add_features.debug(f'Error including public transports feature to df, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('add public transports feature -> Completed!')        
+            logger_add_features.debug('add public transports feature -> Completed!')        
         return X    
 
 class Beaches(BaseEstimator, TransformerMixin):
@@ -89,10 +89,10 @@ class Beaches(BaseEstimator, TransformerMixin):
         try:
             X = DistToBeach(X)
         except Exception as e:
-            logger.debug(f'Error including distance to nearest beach feature to df, exception missage\n{str(e)}')
+            logger_add_features.debug(f'Error including distance to nearest beach feature to df, exception missage\n{str(e)}')
             raise e
         else:
-            logger.debug('add distance to nearest beach -> Completed!')        
+            logger_add_features.debug('add distance to nearest beach -> Completed!')        
         return X
 
 def add_features_data_pipeline()->Pipeline:

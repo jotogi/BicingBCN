@@ -5,7 +5,7 @@ from logger import get_handler
 from typing import List
 import yaml
 
-logger = get_handler()
+logger_files_manager = get_handler()
 
 def read_yaml(file_path):
     with open(file_path, "r") as f:
@@ -15,9 +15,9 @@ def create_folder(folder:str)->None:
     try:    
         os.makedirs(folder)
     except:
-        logger.debug(f'Carpeta {folder} ja existeix')
+        logger_files_manager.debug(f'Carpeta {folder} ja existeix')
     else:
-        logger.debug(f'Carpeta {folder} creada!')
+        logger_files_manager.debug(f'Carpeta {folder} creada!')
 
 def get_all_files_under_path_sorted(path:str='./Data/STATIONS')->List:
     return sorted(os.listdir(path))

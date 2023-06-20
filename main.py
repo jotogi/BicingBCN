@@ -11,8 +11,8 @@ set_config(transform_output="pandas")
 
 
 LOGGER_FILE = 'missages_main.log'
-logger = get_handler(LOGGER_FILENAME= LOGGER_FILE)
-logger.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
+logger_main = get_handler(LOGGER_FILENAME= LOGGER_FILE)
+logger_main.info(f'The scikit-learn version should be >=1.2, and is {sklearn.__version__}')
 
 def main():        
     strat_train_set, strat_validation_set = sequence(

@@ -5,7 +5,9 @@ from datetime import date
 # import dash
 import plotly.express as px
 import pandas as pd
+from logger import get_handler
 
+logger_maps = get_handler()
 # external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 STATIONS_INFO_CLEANED_PATH = './Data/STATIONS_CLEANED/'
 
