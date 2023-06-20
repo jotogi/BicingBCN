@@ -50,9 +50,9 @@ def iterate_over_stations(df:pd.DataFrame, hour:int=0)->pd.DataFrame:
     
      
 
-def get_df_for_dynamics(year:int, month:int, day:int):
-    df_initial = prepare_df_from_csv_file(year,month,day)
-    return iterate_over_stations(df_initial)
+def get_df_for_dynamics(year:int, month:int, day:int, hour:int=0):
+    df_initial = prepare_df_from_csv_file(year, month, day)
+    return iterate_over_stations(df_initial, hour)
 
 def main():
     result = get_df_for_dynamics(2021,11,8)

@@ -46,6 +46,17 @@ app.layout = html.Div([
                                  className='dropdown-class')                    
                 ],
                 className='label-box-pair'
+            ),
+
+                        html.Div(
+                [
+                    html.Label("Avoid until hour:"),
+                    dcc.Dropdown(options=list(range(0,24)),
+                                 value=0,
+                                 id='hour-selection',
+                                 className='dropdown-class')                    
+                ],
+                className='label-box-pair'
             )
         ],
         className='right-div-class'
@@ -56,8 +67,10 @@ app.layout = html.Div([
 @app.callback(
     Output("graph", "figure"),
     Input('date-picker-single', 'date'),
-    Input('feature-selection', 'value'),)
-def display_animated_graph(date_value, feature_value):
+    Input('feature-selection', 'value'),
+    Input('hour-selection', 'value'),
+    )
+def display_animated_graph(date_value, feature_value, hour_clean):
     year, month, day = date_value.split('-')
     year_, month_, day_ = int(year), int(month), int(day)
     features = {'Percentage docks available':'percentage_docks_available',
@@ -74,7 +87,7 @@ def display_animated_graph(date_value, feature_value):
     # df_to_read['Hour:Minute']=df_to_read['Hour:Minute'].round(2)
     # df_to_read = df_to_read.sort_values(by=['station_id','year','month','day','hour','minute'])
 
-    df_to_read =  get_df_for_dynamics(year_,month_,day_)
+    df_to_read =  get_df_for_dynamics(year_,month_,day_, hour_clean)
     filter_df = ((df_to_read['year']==year_) &
                 (df_to_read['month']==month_) &
                 (df_to_read['day']==day_)
