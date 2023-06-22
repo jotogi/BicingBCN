@@ -12,7 +12,7 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 from sklearn import datasets
-from sklearn.ensemble import TandomForestRegressor
+#from sklearn.ensemble import TandomForestRegressor
 
 st. write("""
 
@@ -24,9 +24,9 @@ This app predicts the **Bicing Availability**!
 st. write('---')
 
 # Loads the Bicing Datasets
-bicing = datasets.load_bicing()
-X=pd.DataFrame(bicing.data, columns=bicing.feature_names)
-Y=pd.DataFrame(bicing.target, columns=['availability'])
+#bicing = datasets.load_bicing()
+#X=pd.DataFrame(bicing.data, columns=bicing.feature_names)
+#Y=pd.DataFrame(bicing.target, columns=['availability'])
 
 #Sidebar
 #Header of Specify Input Parameters
@@ -53,7 +53,7 @@ st.header('Specified Input parameters')
 st.write(df)
 st.write('---')
 
-# Build Regression Model
+# Afegur features+columntransform
 model = RandomForestRegressor()
 model.fit(X, Y)
 
